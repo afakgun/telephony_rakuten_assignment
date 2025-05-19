@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "344165943045",
+    "project_id": "telephony-rakuten-assignment",
+    "storage_bucket": "telephony-rakuten-assignment.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344165943045:android:47f4fe69581123f402d96c",
+        "android_client_info": {
+          "package_name": "com.telephony.rakutenassignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO6S7hAy-L_BUSqVdhZygmco4ewKSk-DI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

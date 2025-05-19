@@ -1,0 +1,156 @@
+name: telephony_rakuten_assignment
+description: "A new Flutter project."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  youtube_player_flutter: ^9.1.1
+  traffic_stats: ^0.0.2
+
+  cupertino_icons: ^1.0.8
+  get: ^4.6.6
+  url_launcher: ^6.2.6
+  telephony:
+    path: local_packages/telephony
+  flutter_phone_direct_caller: ^2.1.1
+  # flutter_sms: ^2.3.3
+  # sms_maintained: ^0.2.5
+  permission_handler: ^11.3.1
+  connectivity_plus: ^6.0.3
+  device_info_plus: ^10.1.0
+  fluttertoast: ^8.2.5
+  intl: ^0.19.0
+  flutter_localizations:
+    sdk: flutter
+  flutter_svg: ^2.0.10
+  shared_preferences: ^2.2.3
+  firebase_core: ^3.13.0
+  firebase_auth: ^5.5.3
+  cloud_firestore: ^5.6.7
+  flutter_local_notifications: ^17.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/svg/flags/
+    - assets/images/
+
+  fonts:
+    - family: Poppins-Bold
+      fonts:
+        - asset: assets/fonts/Poppins-Bold.ttf
+    - family: Poppins-Light
+      fonts:
+        - asset: assets/fonts/Poppins-Light.ttf
+    - family: Poppins-Medium
+      fonts:
+        - asset: assets/fonts/Poppins-Medium.ttf
+    - family: Poppins-Regular
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+    - family: Poppins-SemiBold
+      fonts:
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+    - family: Poppins-Thin
+      fonts:
+        - asset: assets/fonts/Poppins-Thin.ttf
+    - family: Arboria-Bold
+      fonts:
+        - asset: assets/fonts/Arboria-Bold.otf
+    - family: Arboria-Light
+      fonts:
+        - asset: assets/fonts/Arboria-Light.otf
+    - family: Arboria-Medium
+      fonts:
+        - asset: assets/fonts/Arboria-Medium.otf
+    - family: Arboria-Book
+      fonts:
+        - asset: assets/fonts/Arboria-Book.otf
+
+    - family: Arboria-Black
+      fonts:
+        - asset: assets/fonts/Arboria-Black.otf
+    - family: Arboria-Thin
+      fonts:
+        - asset: assets/fonts/Arboria-Thin.otf
+
+    - family: Urbanist-Bold
+      fonts:
+        - asset: assets/fonts/Urbanist-Bold.ttf
+    - family: Urbanist-Light
+      fonts:
+        - asset: assets/fonts/Urbanist-Light.ttf
+    - family: Urbanist-Medium
+      fonts:
+        - asset: assets/fonts/Urbanist-Medium.ttf
+    - family: Urbanist-Regular
+      fonts:
+        - asset: assets/fonts/Urbanist-Regular.ttf
+    - family: Urbanist-SemiBold
+      fonts:
+        - asset: assets/fonts/Urbanist-SemiBold.ttf
+    - family: Gilroy-Black
+      fonts:
+        - asset: assets/fonts/Gilroy-Black.ttf
+    - family: Gilroy-Bold
+      fonts:
+        - asset: assets/fonts/Gilroy-Bold.ttf
+    - family: Gilroy-ExtraBold
+      fonts:
+        - asset: assets/fonts/Gilroy-ExtraBold.ttf
+    - family: Gilroy-Heavy
+      fonts:
+        - asset: assets/fonts/Gilroy-Heavy.ttf
+    - family: Gilroy-HeavyItalic
+      fonts:
+        - asset: assets/fonts/Gilroy-HeavyItalic.ttf
+    - family: Gilroy-Light
+      fonts:
+        - asset: assets/fonts/Gilroy-Light.ttf
+    - family: Gilroy-LightItalic
+      fonts:
+        - asset: assets/fonts/Gilroy-LightItalic.ttf
+    - family: Gilroy-Medium
+      fonts:
+        - asset: assets/fonts/Gilroy-Medium.ttf
+    - family: Gilroy-MediumItalic
+      fonts:
+        - asset: assets/fonts/Gilroy-MediumItalic.ttf
+    - family: Gilroy-Regular
+      fonts:
+        - asset: assets/fonts/Gilroy-Regular.ttf
+    - family: Gilroy-RegularItalic
+      fonts:
+        - asset: assets/fonts/Gilroy-RegularItalic.ttf
+    - family: Gilroy-SemiBold
+      fonts:
+        - asset: assets/fonts/Gilroy-SemiBold.ttf
+    - family: Gilroy-SemiBoldItalic
+      fonts:
+        - asset: assets/fonts/Gilroy-SemiBoldItalic.ttf
+    - family: Gilroy-Thin
+      fonts:
+        - asset: assets/fonts/Gilroy-Thin.ttf
+    - family: Gilroy-ThinItalic
+      fonts:
+        - asset: assets/fonts/Gilroy-ThinItalic.ttf
+    - family: Gilroy-UltraLight
+      fonts:
+        - asset: assets/fonts/Gilroy-UltraLight.ttf
+    - family: Gilroy-UltraLightItalic
+      fonts:
+        - asset: assets/fonts/Gilroy-UltraLightItalic.ttf
