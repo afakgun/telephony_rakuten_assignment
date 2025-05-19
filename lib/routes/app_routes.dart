@@ -7,6 +7,7 @@ abstract class Routes {
   static const WELCOME = _Paths.WELCOME;
   static const CONFIRMATION = _Paths.CONFIRMATION;
   static const HOME = _Paths.HOME;
+  static const YOUTUBE = _Paths.YOUTUBE;
   // Add other routes here
 }
 
@@ -16,5 +17,6 @@ abstract class _Paths {
   static const WELCOME = '/welcome';
   static const CONFIRMATION = '/confirmation';
   static const HOME = '/home';
+  static const YOUTUBE = '/youtube';
   // Add other paths here
 }

@@ -7,6 +7,8 @@ import 'package:telephony_rakuten_assignment/presentation/welcome/welcome_view.d
 import 'package:telephony_rakuten_assignment/ui/confirmation/confirmation_view.dart';
 import 'package:telephony_rakuten_assignment/presentation/confirmation/confirmation_binding.dart'; // Import ConfirmationBinding
 import 'package:telephony_rakuten_assignment/presentation/home/home_binding.dart'; // Import HomeBinding
+import 'package:telephony_rakuten_assignment/presentation/youtube/youtube_player_view.dart';
+import 'package:telephony_rakuten_assignment/presentation/youtube/youtube_binding.dart';
 
 part 'app_routes.dart';
 
@@ -31,10 +33,17 @@ class AppPages {
       page: () =>  ConfirmationView(),
       binding: ConfirmationBinding(),
     ),
-     GetPage(
+    GetPage(
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.YOUTUBE,
+      page: () => YoutubePlayerView(
+      
+      ),
+      binding: YoutubeBinding(),
     ),
   ];
 }

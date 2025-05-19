@@ -16,7 +16,8 @@ import 'package:telephony_rakuten_assignment/core/services/shared_preferences_se
 import 'package:telephony_rakuten_assignment/presentation/home/last_call_model.dart';
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/home_service.dart';
-import 'package:telephony_rakuten_assignment/core/localization/app_translations.dart'; // Import localization
+import 'package:telephony_rakuten_assignment/core/localization/app_translations.dart';
+import 'package:telephony_rakuten_assignment/utils/loading_utils.dart'; // Import localization
 
 class HomeController extends GetxController {
   final HomeService _homeService = HomeService();
@@ -38,9 +39,11 @@ class HomeController extends GetxController {
   bool _isCallActive = false;
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
-  Future<void> sendSms(String phoneNumber, String message) async {
+  Future<void> sendSms(String phoneNumber, String message, BuildContext context) async {
     try {
       final uid = SharedPreferencesService.getString('user_uid');
+      LoadingUtils.startLoading(context);
+      await Future.delayed(Duration(seconds: 3));
       bool permissionsGranted = await telephony.requestPhoneAndSmsPermissions ?? false;
       if (!permissionsGranted) {
         print('SMS izni verilmedi');
@@ -66,6 +69,8 @@ class HomeController extends GetxController {
       if (uid != null) {
         _homeService.sendSms(phoneNumber, message, false, uid);
       }
+    } finally {
+      LoadingUtils.stopLoading();
     }
   }
 
@@ -118,39 +123,44 @@ class HomeController extends GetxController {
     await flutterLocalNotificationsPlugin!.initialize(initializationSettings);
   }
 
-  Future<void> startCallTimer(int durationMinutes, String receiverNumber) async {
-    await Future.delayed(Duration(seconds: 3));
-    _remainingSeconds = durationMinutes * 60;
-    _isCallActive = true;
-    RxList<int> signalStrength = RxList();
-    _callTimer?.cancel();
-    _callTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      final callState = await _getCallState();
-      if (callState == CallState.OFFHOOK || callState == CallState.RINGING) {
-        _getSignalStrength().then((value) {
-          signalStrength.add(value[0].index);
-        });
-      } else {
-        if (_isCallActive) {
-          await _onCallEnded(
-            receiverNumber: receiverNumber,
-            selectedDurationInMinutes: durationMinutes,
-            callDurationInSeconds: timer.tick,
-            qualityStrengthList: signalStrength.toList(),
-          );
-        }
-
-        timer.cancel();
-      }
-      if (_remainingSeconds > 0) {
-        _remainingSeconds--;
-      } else {
+  Future<void> startCallTimer(int durationMinutes, String receiverNumber, BuildContext context) async {
+    try {
+      LoadingUtils.startLoading(context);
+      await Future.delayed(Duration(seconds: 3));
+      _remainingSeconds = durationMinutes * 60;
+      _isCallActive = true;
+      RxList<int> signalStrength = RxList();
+      _callTimer?.cancel();
+      _callTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+        final callState = await _getCallState();
         if (callState == CallState.OFFHOOK || callState == CallState.RINGING) {
-          endCall();
-          await _showLocalNotification();
+          _getSignalStrength().then((value) {
+            signalStrength.add(value[0].index);
+          });
+        } else {
+          if (_isCallActive) {
+            await _onCallEnded(
+              receiverNumber: receiverNumber,
+              selectedDurationInMinutes: durationMinutes,
+              callDurationInSeconds: timer.tick,
+              qualityStrengthList: signalStrength.toList(),
+            );
+          }
+
+          timer.cancel();
         }
-      }
-    });
+        if (_remainingSeconds > 0) {
+          _remainingSeconds--;
+        } else {
+          if (callState == CallState.OFFHOOK || callState == CallState.RINGING) {
+            endCall();
+            await _showLocalNotification();
+          }
+        }
+      });
+    } finally {
+      LoadingUtils.stopLoading();
+    }
   }
 
   Future<void> _onCallEnded({
@@ -306,34 +316,42 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> startYoutubeStreaming() async {
-    final url = youtubeUrlController.text.trim();
-    final volumeMb = int.tryParse(youtubeVolumeController.text.trim()) ?? 0;
-    if (url.isEmpty || volumeMb <= 0) return;
+  Future<void> startYoutubeStreaming(BuildContext context) async {
+    try {
+      LoadingUtils.startLoading(context);
+      final url = youtubeUrlController.text.trim();
+      final volumeMb = int.tryParse(youtubeVolumeController.text.trim()) ?? 0;
+      if (url.isEmpty || volumeMb <= 0) return;
 
-    final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult.any((element) => element == ConnectivityResult.wifi)) {
-      AppDialogUtils.showOnlyContentDialog(
-        title: 'Uyarı',
-        message: 'Youtube videosu sadece hücresel veri ile açılabilir. Lütfen wifi bağlantınızı kapatın.',
-        buttonLeftText: '',
-        buttonLeftAction: null,
-        buttonRightText: 'Tamam',
-        buttonRightAction: () => Get.back(),
-      );
-      return;
+      final connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult.any((element) => element == ConnectivityResult.wifi)) {
+        AppDialogUtils.showOnlyContentDialog(
+          title: 'Uyarı',
+          message: 'Youtube videosu sadece hücresel veri ile açılabilir. Lütfen wifi bağlantınızı kapatın.',
+          buttonLeftText: '',
+          buttonLeftAction: null,
+          buttonRightText: 'Tamam',
+          buttonRightAction: () => Get.back(),
+        );
+        return;
+      }
+      if (connectivityResult.any((element) => element == ConnectivityResult.none)) {
+        AppDialogUtils.showOnlyContentDialog(
+          title: 'Bağlantı Yok',
+          message: 'İnternet bağlantısı bulunamadı.',
+          buttonLeftText: '',
+          buttonLeftAction: null,
+          buttonRightText: 'Tamam',
+          buttonRightAction: () => Get.back(),
+        );
+        return;
+      }
+      Get.toNamed('/youtube', arguments: {
+        'url': url,
+        'volumeMb': volumeMb,
+      });
+    } finally {
+      LoadingUtils.stopLoading();
     }
-    if (connectivityResult.any((element) => element == ConnectivityResult.none)) {
-      AppDialogUtils.showOnlyContentDialog(
-        title: 'Bağlantı Yok',
-        message: 'İnternet bağlantısı bulunamadı.',
-        buttonLeftText: '',
-        buttonLeftAction: null,
-        buttonRightText: 'Tamam',
-        buttonRightAction: () => Get.back(),
-      );
-      return;
-    }
-    Get.toNamed('/youtube', arguments: {'url': url, 'maxVolumeMb': volumeMb});
   }
 }

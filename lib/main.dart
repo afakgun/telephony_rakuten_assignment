@@ -5,7 +5,6 @@ import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
 import 'core/localization/app_translations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

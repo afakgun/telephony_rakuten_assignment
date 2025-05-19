@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'font_family_const.dart';
 import '../../const/app_colors.dart';
 
-
 class TextStyleUtils {
   static TextStyle blackColorLightText(double fontsize) {
     return TextStyle(fontFamily: FontFamilyConst.gilroyLight, fontSize: fontsize, color: AppColors.textDark);
@@ -67,7 +66,7 @@ class TextStyleUtils {
   }
 
   static TextStyle lightGreyColorRegularText(double fontsize) {
-    return TextStyle(fontFamily: FontFamilyConst.gilroyRegular, fontSize: fontsize, color: AppColors.greyBar);
+    return TextStyle(fontFamily: FontFamilyConst.gilroyRegular, fontSize: fontsize, color: const Color.fromARGB(255, 185, 185, 185));
   }
 
   static TextStyle redColorMediumText(double fontsize) {

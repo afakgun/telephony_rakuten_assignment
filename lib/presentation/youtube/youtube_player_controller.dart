@@ -7,20 +7,36 @@ import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 class YoutubePlayerGetxController extends GetxController {
   late YoutubePlayerController youtubeController;
   late Stream<NetworkSpeedData> speedStream;
-  late NetworkSpeedData currentSpeed;
-  int usedData = 0;
-  bool isDialogShown = false;
-  final int maxVolumeMb;
-  final String url;
-  final NetworkSpeedService networkSpeedService = NetworkSpeedService();
+  final Rx<NetworkSpeedData> currentSpeed = NetworkSpeedData(downloadSpeed: 0, uploadSpeed: 0).obs;
 
-  YoutubePlayerGetxController({required this.url, required this.maxVolumeMb});
+  RxInt usedData = 0.obs;
+  bool isDialogShown = false;
+  final RxnInt maxVolumeMb = RxnInt();
+  final RxnString url = RxnString();
+  final NetworkSpeedService networkSpeedService = NetworkSpeedService();
+  final RxList<int> downloadSpeedList = <int>[].obs;
 
   @override
   void onInit() {
     super.onInit();
+
+    url.value = Get.arguments['url'];
+    maxVolumeMb.value = Get.arguments['volumeMb'];
+    final videoUrl = url.value;
+    if (videoUrl == null || maxVolumeMb.value == null) {
+      AppDialogUtils.showOnlyContentDialog(
+        title: 'Hata',
+        message: 'Video URL veya veri limiti geçersiz.',
+        buttonLeftText: '',
+        buttonLeftAction: null,
+        buttonRightText: 'Tamam',
+        buttonRightAction: () => Get.back(),
+        isDismissable: false,
+      );
+      return;
+    }
     youtubeController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(url) ?? '',
+      initialVideoId: YoutubePlayer.convertUrlToId(videoUrl) ?? '',
       flags: const YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
@@ -28,13 +44,19 @@ class YoutubePlayerGetxController extends GetxController {
     );
     networkSpeedService.init();
     speedStream = networkSpeedService.speedStream;
-    currentSpeed = NetworkSpeedData(downloadSpeed: 0, uploadSpeed: 0);
+    currentSpeed.value = NetworkSpeedData(downloadSpeed: 0, uploadSpeed: 0);
 
     speedStream.listen((speedData) {
-      currentSpeed = speedData;
-      usedData += speedData.downloadSpeed + speedData.uploadSpeed;
-      update();
-      if ((usedData ~/ 1024) >= maxVolumeMb && !isDialogShown) {
+      print('Download Speed: ${speedData.downloadSpeed} KB/s');
+      print('Upload Speed: ${speedData.uploadSpeed} KB/s');
+      currentSpeed.value = speedData;
+      usedData.value += speedData.downloadSpeed + speedData.uploadSpeed;
+      downloadSpeedList.add(speedData.downloadSpeed);
+      if (downloadSpeedList.length > 30) {
+        downloadSpeedList.removeAt(0);
+      }
+      final maxVol = maxVolumeMb.value ?? 0;
+      if ((usedData.value ~/ 1024) >= maxVol && !isDialogShown) {
         youtubeController.pause();
         isDialogShown = true;
         _showLimitDialog();

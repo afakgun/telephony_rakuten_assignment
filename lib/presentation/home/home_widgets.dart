@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -233,7 +232,7 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
                     final receiver = selectedCountryCode + receiverController.text.trim();
                     final duration = int.tryParse(durationController.text.trim()) ?? 0;
                     await FlutterPhoneDirectCaller.callNumber(receiver);
-                    controller.startCallTimer(duration, receiver);
+                    controller.startCallTimer(duration, receiver, context);
                     Navigator.of(context).pop();
                   }
                 },
@@ -352,7 +351,7 @@ class YoutubeCard extends StatelessWidget {
                   backgroundColor: Colors.red[700],
                 ),
                 onPressed: () {
-                  controller.startYoutubeStreaming();
+                  controller.startYoutubeStreaming(context);
                 },
                 child: const Icon(Icons.play_arrow, color: Colors.white),
               ),
@@ -457,7 +456,7 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
                   if (_formKey.currentState?.validate() ?? false) {
                     final receiver = selectedCountryCode + receiverController.text.trim();
                     final message = messageController.text.trim();
-                    await controller.sendSms(receiver, message);
+                    await controller.sendSms(receiver, message, context);
                     Navigator.of(context).pop();
                   }
                 },

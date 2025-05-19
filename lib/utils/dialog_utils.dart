@@ -32,7 +32,7 @@ class AppDialogUtils {
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(16)),
-              color: AppColors.greyBar,
+              color: Colors.white,
               border: Border.all(color: Colors.grey.shade300, width: 1),
               // Removed boxShadow
             ),
@@ -49,7 +49,7 @@ class AppDialogUtils {
                         ? SvgPicture.asset(iconData)
                         : Icon(
                             Icons.notifications_outlined,
-                            color: iconColor ?? AppColors.primary,
+                            color: iconColor ?? Colors.white,
                             size: 30,
                           ),
                   ),
