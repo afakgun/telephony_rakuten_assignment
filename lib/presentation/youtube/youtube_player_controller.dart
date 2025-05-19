@@ -25,8 +25,8 @@ class YoutubePlayerGetxController extends GetxController {
     final videoUrl = url.value;
     if (videoUrl == null || maxVolumeMb.value == null) {
       AppDialogUtils.showOnlyContentDialog(
-        title: 'Hata',
-        message: 'Video URL veya veri limiti geçersiz.',
+        title: 'error'.tr,
+        message: 'invalid_url_or_limit'.tr,
         buttonLeftText: '',
         buttonLeftAction: null,
         buttonRightText: 'Tamam',
@@ -66,8 +66,8 @@ class YoutubePlayerGetxController extends GetxController {
 
   void _showLimitDialog() {
     AppDialogUtils.showOnlyContentDialog(
-      title: 'Veri Limiti Aşıldı',
-      message: 'Belirlediğiniz $maxVolumeMb MB veri limiti aşıldı. Video durduruldu.',
+      title: 'data_limit_exceeded'.tr,
+      message: 'data_limit_exceeded_desc'.trParams({'maxVolumeMb': maxVolumeMb.value.toString()}),
       buttonLeftText: '',
       buttonLeftAction: null,
       buttonRightText: 'Tamam',

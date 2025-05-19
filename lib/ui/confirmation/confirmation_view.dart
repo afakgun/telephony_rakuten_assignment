@@ -4,19 +4,15 @@ import 'package:telephony_rakuten_assignment/presentation/confirmation/confirmat
 import 'package:telephony_rakuten_assignment/presentation/confirmation/controller/confirmation_controller.dart';
 
 class ConfirmationView extends GetView<ConfirmationController> {
-
-
   const ConfirmationView({
     super.key,
-
   });
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Doğrulama Kodu'),
+        title: Text('verification_code'.tr),
         centerTitle: true,
       ),
       body: Padding(
@@ -25,7 +21,7 @@ class ConfirmationView extends GetView<ConfirmationController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Telefonunuza gönderilen 6 haneli doğrulama kodunu giriniz.',
+              'enter_verification_code'.tr,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
@@ -35,19 +31,13 @@ class ConfirmationView extends GetView<ConfirmationController> {
             ),
             const SizedBox(height: 16),
             Obx(() => TextButton(
-                  onPressed: controller.isLoading.value
-                      ? null
-                      : controller.resendCode,
-                  child: const Text('Tekrar Gönder'),
+                  onPressed: controller.isLoading.value ? null : controller.resendCode,
+                  child: Text('resend'.tr),
                 )),
             const SizedBox(height: 16),
             Obx(() => ElevatedButton(
-                  onPressed: controller.isCodeValid.value
-                      ? controller.onConfirmPressed
-                      : null,
-                  child: controller.isLoading.value
-                      ? const CircularProgressIndicator()
-                      : const Text('Onayla'),
+                  onPressed: controller.isCodeValid.value ? controller.onConfirmPressed : null,
+                  child: controller.isLoading.value ? const CircularProgressIndicator() : const Text('Onayla'),
                 )),
             Obx(() => controller.errorMessage.value.isNotEmpty
                 ? Padding(

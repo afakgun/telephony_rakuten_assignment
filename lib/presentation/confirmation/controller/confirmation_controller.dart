@@ -35,14 +35,14 @@ class ConfirmationController extends GetxController {
       await service.sendOtp(
         phoneNumber: phoneNumber,
         onCodeSent: (newVerificationId) {
-          Get.snackbar('Başarılı', 'Kod tekrar gönderildi.');
+          Get.snackbar('success'.tr, 'code_resent'.tr);
         },
         onError: (e) {
-          errorMessage.value = 'Kod tekrar gönderilemedi: ${e.message}';
+          errorMessage.value = '${'code_not_resent'.tr}: ${e.message}';
         },
       );
     } catch (e) {
-      errorMessage.value = 'Kod tekrar gönderilemedi.';
+      errorMessage.value = 'code_not_resent'.tr;
     } finally {
       isLoading.value = false;
     }
@@ -61,10 +61,10 @@ class ConfirmationController extends GetxController {
       if (user != null) {
         await checkUserAndNavigate(user.uid);
       } else {
-        errorMessage.value = 'Kullanıcı doğrulanamadı.';
+        errorMessage.value = 'user_not_verified'.tr;
       }
     } catch (e) {
-      errorMessage.value = 'Kod doğrulanamadı. Lütfen tekrar deneyin. \n ${e.toString()}';
+      errorMessage.value = '${'code_not_verified'.tr} \n ${e.toString()}';
     } finally {
       isLoading.value = false;
     }
@@ -85,7 +85,7 @@ class ConfirmationController extends GetxController {
         await showNewUserDialog(uid);
       }
     } catch (e) {
-      errorMessage.value = 'Kullanıcı kontrol edilirken bir hata oluştu.';
+      errorMessage.value = 'user_check_error'.tr;
     }
   }
 
@@ -94,7 +94,7 @@ class ConfirmationController extends GetxController {
     String lastName = '';
 
     await Get.defaultDialog(
-      title: 'Yeni Kullanıcı',
+      title: 'new_user'.tr,
       content: Column(
         children: [
           TextField(
@@ -131,10 +131,10 @@ class ConfirmationController extends GetxController {
           await SharedPreferencesService.setString("user_credential", json.encode(newUser.toJson()));
           Get.offAllNamed('/home');
         } else {
-          errorMessage.value = 'Ad ve Soyad boş bırakılamaz.';
+          errorMessage.value = 'name_surname_empty'.tr;
         }
       },
-      textCancel: 'İptal',
+      textCancel: 'cancel'.tr,
       onCancel: () {
         Get.back();
         // Handle cancellation if needed

@@ -28,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hoşgeldiniz',
+                'welcome'.tr,
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -37,34 +37,34 @@ class WelcomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Lütfen aşağıdaki bilgileri doldurun:',
+                'fill_fields'.tr,
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
               SizedBox(height: 32),
               _buildTextField(
-                label: 'Alıcı Telefon Numarası',
-                hint: '5xx xxx xx xx',
+                label: 'receiver_phone'.tr,
+                hint: 'receiver_phone_hint'.tr,
                 onChanged: (v) => controller.receiverNumber.value = v,
                 keyboardType: TextInputType.phone,
               ),
               SizedBox(height: 16),
               _buildTextField(
-                label: 'Arama Süresi (dk)',
-                hint: 'Örn: 2',
+                label: 'call_duration_label'.tr,
+                hint: 'call_duration_hint'.tr,
                 onChanged: (v) => controller.duration.value = v,
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: 16),
               _buildTextField(
-                label: 'YouTube Hacmi (MB)',
-                hint: 'Örn: 50',
+                label: 'youtube_volume_label'.tr,
+                hint: 'youtube_volume_hint'.tr,
                 onChanged: (v) => controller.volume.value = v,
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: 16),
               _buildTextField(
-                label: 'SMS Mesajı',
-                hint: 'Mesaj içeriği',
+                label: 'sms_message_label'.tr,
+                hint: 'sms_message_hint'.tr,
                 onChanged: (v) => controller.messageBody.value = v,
                 keyboardType: TextInputType.text,
                 maxLines: 2,
@@ -84,7 +84,7 @@ class WelcomeScreen extends StatelessWidget {
                               });
                             }
                           : null,
-                      child: Text('Devam Et'),
+                      child: Text('continue'.tr),
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         textStyle: TextStyle(fontSize: 18),

@@ -33,7 +33,7 @@ class OnboardingView extends GetView<OnboardingController> {
               children: [
                 TextButton(
                   onPressed: controller.skipOnboarding,
-                  child: Text('Geç'), 
+                  child: Text('skip'.tr), 
                 ),
                 Row(
                   children: List.generate(

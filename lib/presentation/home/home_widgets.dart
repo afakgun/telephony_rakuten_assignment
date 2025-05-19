@@ -29,8 +29,8 @@ class UserInfoHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name ?? 'Kullanıcıya erişilemedi', style: TextStyleUtils.blackColorBoldText(16)),
-            Text(phone ?? 'Telefon numarasına erişilemedi', style: TextStyleUtils.blackColorRegularText(14)),
+            Text(name ?? 'user_not_found'.tr, style: TextStyleUtils.blackColorBoldText(16)),
+            Text(phone ?? 'phone_not_found'.tr, style: TextStyleUtils.blackColorRegularText(14)),
           ],
         ),
       ],
@@ -47,10 +47,10 @@ class CallCard extends StatelessWidget {
 
     return Obx(() {
       final kpi = {
-        "Call Duration": controller.lastCallModel.value?.callDurationInSeconds != null ? '${controller.lastCallModel.value?.callDurationInSeconds} sn' : '0 sn',
-        "Dialed Number": controller.lastCallModel.value?.receiverNumber ?? '',
-        "Call Quality": _signalToQuality(controller.lastCallModel.value?.qualityStrengthList),
-        "Termination Reason": "Kullanıcı sonlandırdı"
+        "call_card_duration".tr: controller.lastCallModel.value?.callDurationInSeconds != null ? '${controller.lastCallModel.value?.callDurationInSeconds} sn' : '0 sn',
+        "call_card_number".tr: controller.lastCallModel.value?.receiverNumber ?? '',
+        "call_card_quality".tr: _signalToQuality(controller.lastCallModel.value?.qualityStrengthList),
+        "call_card_termination".tr: "termination_reason_user".tr
       };
 
       return Card(
@@ -62,9 +62,9 @@ class CallCard extends StatelessWidget {
             children: [
               Icon(Icons.phone, size: 48, color: Colors.green[700]),
               const SizedBox(height: 16),
-              Text('Arama Yap', style: TextStyleUtils.blackColorBoldText(18)),
+              Text('call_card_title'.tr, style: TextStyleUtils.blackColorBoldText(18)),
               const SizedBox(height: 8),
-              Text('Belirli bir numarayı aramak için tıklayın.', style: TextStyleUtils.blackColorRegularText(14)),
+              Text('call_card_desc'.tr, style: TextStyleUtils.blackColorRegularText(14)),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
@@ -77,7 +77,7 @@ class CallCard extends StatelessWidget {
                     builder: (context) => const CallBottomSheet(),
                   );
                 },
-                child: const Text('Ara'),
+                child: Text('call_card_button'.tr),
               ),
               const SizedBox(height: 24),
               Visibility(
@@ -89,7 +89,7 @@ class CallCard extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        Text('Son arama bilgileri', style: TextStyleUtils.blackColorBoldText(15)),
+                        Text('call_card_last_info'.tr, style: TextStyleUtils.blackColorBoldText(15)),
                         const SizedBox(height: 8),
                         ...kpi.entries.map((e) => Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,15 +117,15 @@ class CallCard extends StatelessWidget {
     final average = level.reduce((a, b) => a + b) ~/ level.length;
     switch (average) {
       case 0:
-        return 'Yok';
+        return 'call_card_none'.tr;
       case 1:
-        return 'Zayıf';
+        return 'weak'.tr;
       case 2:
-        return 'Orta';
+        return 'call_card_medium'.tr;
       case 3:
-        return 'İyi';
+        return 'good'.tr;
       case 4:
-        return 'Çok İyi';
+        return 'very_good'.tr;
       default:
         return 'Bilinmiyor';
     }
@@ -204,8 +204,8 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
                   child: TextFormField(
                     controller: receiverController,
                     keyboardType: TextInputType.phone,
-                    decoration: const InputDecoration(
-                      labelText: 'Alıcı Telefon Numarası',
+                    decoration: InputDecoration(
+                      labelText: 'receiver_phone'.tr,
                       border: OutlineInputBorder(),
                     ),
                     validator: (v) => v == null || v.isEmpty ? 'Numara giriniz' : null,
@@ -217,11 +217,11 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
             TextFormField(
               controller: durationController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Süre (dakika)',
+              decoration: InputDecoration(
+                labelText: 'duration_min'.tr,
                 border: OutlineInputBorder(),
               ),
-              validator: (v) => v == null || v.isEmpty ? 'Süre giriniz' : null,
+              validator: (v) => v == null || v.isEmpty ? 'enter_duration'.tr : null,
             ),
             const SizedBox(height: 24),
             SizedBox(
@@ -236,7 +236,7 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
                     Navigator.of(context).pop();
                   }
                 },
-                child: const Text('Aramayı Başlat'),
+                child: Text('start_call'.tr),
               ),
             ),
           ],
@@ -260,9 +260,9 @@ class SmsCard extends StatelessWidget {
           children: [
             Icon(Icons.sms, size: 48, color: Colors.blue[700]),
             const SizedBox(height: 16),
-            Text('Mesaj Gönder', style: TextStyleUtils.blackColorBoldText(18)),
+            Text('send_message'.tr, style: TextStyleUtils.blackColorBoldText(18)),
             const SizedBox(height: 8),
-            Text('SMS göndermek için tıklayın.', style: TextStyleUtils.blackColorRegularText(14)),
+            Text('click_to_send_sms'.tr, style: TextStyleUtils.blackColorRegularText(14)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
@@ -275,7 +275,7 @@ class SmsCard extends StatelessWidget {
                   builder: (context) => const SmsBottomSheet(),
                 );
               },
-              child: const Text('Gönder'),
+              child: Text('send'.tr),
             ),
           ],
         ),
@@ -308,9 +308,9 @@ class YoutubeCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Youtube Akışı', style: TextStyleUtils.blackColorBoldText(15)),
+                  Text('youtube_card_title'.tr, style: TextStyleUtils.blackColorBoldText(15)),
                   const SizedBox(height: 4),
-                  Text('Youtube URL ve veri miktarını girerek başlat.', style: TextStyleUtils.blackColorRegularText(13)),
+                  Text('youtube_card_desc'.tr, style: TextStyleUtils.blackColorRegularText(13)),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -405,7 +405,7 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('SMS Gönder', style: Theme.of(context).textTheme.titleLarge),
+            Text('sms_send'.tr, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 16),
             Row(
               children: [
@@ -442,8 +442,8 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
               controller: messageController,
               keyboardType: TextInputType.text,
               maxLines: 3,
-              decoration: const InputDecoration(
-                labelText: 'Mesaj İçeriği',
+              decoration: InputDecoration(
+                labelText: 'message_content'.tr,
                 border: OutlineInputBorder(),
               ),
               validator: (v) => v == null || v.isEmpty ? 'Mesaj giriniz' : null,
@@ -460,7 +460,7 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
                     Navigator.of(context).pop();
                   }
                 },
-                child: const Text('SMS Gönder'),
+                child: Text('sms_send'.tr),
               ),
             ),
           ],

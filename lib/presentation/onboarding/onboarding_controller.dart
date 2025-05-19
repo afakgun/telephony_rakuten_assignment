@@ -21,23 +21,23 @@ class OnboardingController extends GetxController {
   final onboardingPages = [
     OnboardingPageModel(
       image: 'assets/images/onboarding_1.jpg', // Placeholder
-      title: 'Sesli Arama', // TODO: Localize
-      description: 'Belirtilen numaraya sesli arama başlatın ve arama süresini takip edin.', // TODO: Localize
+      title: 'voice_call_title'.tr,
+      description: 'voice_call_desc'.tr,
     ),
     OnboardingPageModel(
       image: 'assets/images/onboarding_2.jpg', // Placeholder
-      title: 'Veri Kullanımı (Youtube)', // TODO: Localize
-      description: 'Belirtilen URL\'den Youtube videosu izleyin ve veri kullanımını sınırlayın (yalnızca hücresel veri).', // TODO: Localize
+      title: 'youtube_usage_title'.tr,
+      description: 'youtube_usage_desc'.tr,
     ),
     OnboardingPageModel(
       image: 'assets/images/onboarding_3.jpg', // Placeholder
-      title: 'SMS Gönderme', // TODO: Localize
-      description: 'Belirtilen numaraya özel mesaj içeriği ile SMS gönderin.', // TODO: Localize
+      title: 'send_sms_title'.tr,
+      description: 'send_sms_desc'.tr,
     ),
     OnboardingPageModel(
       image: 'assets/images/onboarding_4.jpg', // Placeholder
-      title: 'KPI Takibi', // TODO: Localize
-      description: 'Uygulama özelliklerinin kullanımına ilişkin önemli performans göstergelerini (KPI) görüntüleyin.', // TODO: Localize
+      title: 'kpi_tracking_title'.tr,
+      description: 'kpi_tracking_desc'.tr,
     ),
   ];
 

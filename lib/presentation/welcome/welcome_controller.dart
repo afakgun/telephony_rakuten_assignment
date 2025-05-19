@@ -28,11 +28,11 @@ class WelcomeController extends GetxController {
           });
         },
         onError: (e) {
-          errorMessage.value = 'OTP gönderilemedi: ${e.message}';
+          errorMessage.value = 'otp_not_sent'.trParams({'error': e.message ?? ''});
         },
       );
     } catch (e) {
-      errorMessage.value = 'Bir hata oluştu';
+      errorMessage.value = 'error_occurred'.tr;
     } finally {
       isLoading.value = false;
     }

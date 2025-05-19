@@ -95,7 +95,7 @@ class HomeController extends GetxController {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       if (androidInfo.version.sdkInt < 29) {
         AppDialogUtils.showOnlyContentDialog(
-          title: 'Uyarı', // Or use localization: 'warning'.tr
+          title: 'warning'.tr, // Or use localization: 'warning'.tr
           message: 'android_version_warning'.tr, // Localized warning message
           buttonLeftText: '',
           buttonLeftAction: null,
@@ -181,19 +181,19 @@ class HomeController extends GetxController {
   }
 
   Future<void> _showLocalNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'call_channel',
       'Call Notifications',
-      channelDescription: 'Arama süresi dolduğunda bildirim gönderir',
+      channelDescription: 'call_notification_desc'.tr,
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
     );
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin?.show(
       0,
-      'Süre Doldu',
-      'Belirlediğiniz arama süresi sona erdi. Hâlâ görüşmedesiniz.',
+      'call_time_up'.tr,
+      'call_time_up_desc'.tr,
       platformChannelSpecifics,
       payload: 'call_timeout',
     );
@@ -326,8 +326,8 @@ class HomeController extends GetxController {
       final connectivityResult = await Connectivity().checkConnectivity();
       if (connectivityResult.any((element) => element == ConnectivityResult.wifi)) {
         AppDialogUtils.showOnlyContentDialog(
-          title: 'Uyarı',
-          message: 'Youtube videosu sadece hücresel veri ile açılabilir. Lütfen wifi bağlantınızı kapatın.',
+          title: 'warning'.tr,
+          message: 'youtube_cellular_only'.tr,
           buttonLeftText: '',
           buttonLeftAction: null,
           buttonRightText: 'Tamam',
@@ -337,8 +337,8 @@ class HomeController extends GetxController {
       }
       if (connectivityResult.any((element) => element == ConnectivityResult.none)) {
         AppDialogUtils.showOnlyContentDialog(
-          title: 'Bağlantı Yok',
-          message: 'İnternet bağlantısı bulunamadı.',
+          title: 'no_connection'.tr,
+          message: 'no_internet'.tr,
           buttonLeftText: '',
           buttonLeftAction: null,
           buttonRightText: 'Tamam',

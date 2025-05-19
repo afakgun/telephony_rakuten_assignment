@@ -25,7 +25,7 @@ class ConfirmationView extends StatelessWidget {
     ));
     return Scaffold(
       appBar: AppBar(
-        title: Text('Doğrulama Kodu'),
+        title: Text('verification_code'.tr),
         centerTitle: true,
       ),
       body: Padding(
@@ -34,7 +34,7 @@ class ConfirmationView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Telefonunuza gönderilen 6 haneli doğrulama kodunu giriniz.',
+              'enter_verification_code'.tr,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
@@ -45,12 +45,12 @@ class ConfirmationView extends StatelessWidget {
             const SizedBox(height: 16),
             Obx(() => TextButton(
                   onPressed: controller.isLoading.value ? null : controller.resendCode,
-                  child: const Text('Tekrar Gönder'),
+                  child: Text('resend'.tr),
                 )),
             const SizedBox(height: 16),
             Obx(() => ElevatedButton(
                   onPressed: controller.isCodeValid.value ? controller.onConfirmPressed : null,
-                  child: controller.isLoading.value ? const CircularProgressIndicator() : const Text('Onayla'),
+                  child: controller.isLoading.value ? const CircularProgressIndicator() : Text('continue'.tr),
                 )),
             Obx(() => controller.errorMessage.value.isNotEmpty
                 ? Padding(

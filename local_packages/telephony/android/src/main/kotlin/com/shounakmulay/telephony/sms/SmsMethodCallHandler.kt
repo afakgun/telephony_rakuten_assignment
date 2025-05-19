@@ -54,7 +54,7 @@ class SmsMethodCallHandler(
     MethodChannel.MethodCallHandler,
     BroadcastReceiver() {
 
-  private lateinit var result: MethodChannel.Result
+  private var result: MethodChannel.Result? = null
   private lateinit var action: SmsAction
   private lateinit var foregroundChannel: MethodChannel
   private lateinit var activity: Activity
@@ -82,6 +82,7 @@ class SmsMethodCallHandler(
 
     if (action == SmsAction.NO_SUCH_METHOD) {
       result.notImplemented()
+      this.result = null
       return
     }
 
@@ -101,6 +102,7 @@ class SmsMethodCallHandler(
           val address = call.argument<String>(ADDRESS)
           if (messageBody.isNullOrBlank() || address.isNullOrBlank()) {
             result.error(ILLEGAL_ARGUMENT, Constants.MESSAGE_OR_ADDRESS_CANNOT_BE_NULL, null)
+            this.result = null
             return
           }
 
@@ -118,6 +120,7 @@ class SmsMethodCallHandler(
           val backgroundHandle = call.argument<Long>(BACKGROUND_HANDLE)
           if (setupHandle == null || backgroundHandle == null) {
             result.error(ILLEGAL_ARGUMENT, "Setup handle or background handle missing", null)
+            this.result = null
             return
           }
 
@@ -160,13 +163,19 @@ class SmsMethodCallHandler(
         ActionType.SEND_SMS -> handleSendSmsActions(smsAction)
         ActionType.BACKGROUND -> handleBackgroundActions(smsAction)
         ActionType.GET -> handleGetActions(smsAction)
-        ActionType.PERMISSION -> result.success(true)
+        ActionType.PERMISSION -> result?.success(true)
         ActionType.CALL -> handleCallActions(smsAction)
       }
+      result?.let {
+        // Only nullify if a reply is sent here (not all branches reply here)
+        this.result = null
+      }
     } catch (e: IllegalArgumentException) {
-      result.error(ILLEGAL_ARGUMENT, WRONG_METHOD_TYPE, null)
+      result?.error(ILLEGAL_ARGUMENT, WRONG_METHOD_TYPE, null)
+      this.result = null
     } catch (e: RuntimeException) {
-      result.error(FAILED_FETCH, e.message, null)
+      result?.error(FAILED_FETCH, e.message, null)
+      this.result = null
     }
   }
 
@@ -182,7 +191,8 @@ class SmsMethodCallHandler(
       else -> throw IllegalArgumentException()
     }
     val messages = smsController.getMessages(contentUri, projection!!, selection, selectionArgs, sortOrder)
-    result.success(messages)
+    result?.success(messages)
+    this.result = null
   }
 
   private fun handleSendSmsActions(smsAction: SmsAction) {
@@ -199,7 +209,8 @@ class SmsMethodCallHandler(
       SmsAction.SEND_SMS_INTENT -> smsController.sendSmsIntent(address, messageBody)
       else -> throw IllegalArgumentException()
     }
-    result.success(null)
+    result?.success(null)
+    this.result = null
   }
 
   private fun handleBackgroundActions(smsAction: SmsAction) {
@@ -240,23 +251,35 @@ class SmsMethodCallHandler(
         SmsAction.GET_SIGNAL_STRENGTH -> {
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             getSignalStrength()
-                ?: result.error("SERVICE_STATE_NULL", "Error getting service state", null)
-
+                ?: run {
+                  result?.error("SERVICE_STATE_NULL", "Error getting service state", null)
+                  this@SmsMethodCallHandler.result = null
+                  return
+                }
           } else {
-            result.error("INCORRECT_SDK_VERSION", "getServiceState() can only be called on Android Q and above", null)
+            result?.error("INCORRECT_SDK_VERSION", "getServiceState() can only be called on Android Q and above", null)
+            this@SmsMethodCallHandler.result = null
+            return
           }
         }
         SmsAction.GET_SERVICE_STATE -> {
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             getServiceState()
-                ?: result.error("SERVICE_STATE_NULL", "Error getting service state", null)
+                ?: run {
+                  result?.error("SERVICE_STATE_NULL", "Error getting service state", null)
+                  this@SmsMethodCallHandler.result = null
+                  return
+                }
           } else {
-            result.error("INCORRECT_SDK_VERSION", "getServiceState() can only be called on Android O and above", null)
+            result?.error("INCORRECT_SDK_VERSION", "getServiceState() can only be called on Android O and above", null)
+            this@SmsMethodCallHandler.result = null
+            return
           }
         }
         else -> throw IllegalArgumentException()
       }
-      result.success(value)
+      result?.success(value)
+      this@SmsMethodCallHandler.result = null
     }
   }
 
@@ -374,13 +397,16 @@ class SmsMethodCallHandler(
       execute(action)
       true
     } else {
-      onPermissionDenied(deniedPermissions)
+      if (this.result != null) {
+        onPermissionDenied(deniedPermissions)
+      }
       false
     }
   }
 
   private fun onPermissionDenied(deniedPermissions: List<String>) {
-    result.error(PERMISSION_DENIED, PERMISSION_DENIED_MESSAGE, deniedPermissions)
+    result?.error(PERMISSION_DENIED, PERMISSION_DENIED_MESSAGE, deniedPermissions)
+    this.result = null
   }
 
   fun setForegroundChannel(channel: MethodChannel) {

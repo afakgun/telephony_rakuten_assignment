@@ -12,7 +12,7 @@ class WelcomeView extends StatelessWidget {
     ever(controller.errorMessage, (String msg) {
       if (msg.isNotEmpty) {
         AppDialogUtils.showOnlyContentDialog(
-          title: 'Hata',
+          title: 'error'.tr,
           message: msg,
           buttonLeftText: '',
           buttonLeftAction: null,
