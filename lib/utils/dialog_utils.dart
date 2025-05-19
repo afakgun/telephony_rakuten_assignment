@@ -6,7 +6,7 @@ import 'package:telephony_rakuten_assignment/utils/textstyle_utils.dart';
 
 class AppDialogUtils {
   static showOnlyContentDialog({
-    String? iconData, // svgName
+    String? iconData,
     String? title,
     required String message,
     required String buttonLeftText,
@@ -34,7 +34,6 @@ class AppDialogUtils {
               borderRadius: BorderRadius.all(Radius.circular(16)),
               color: Colors.white,
               border: Border.all(color: Colors.grey.shade300, width: 1),
-              // Removed boxShadow
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,

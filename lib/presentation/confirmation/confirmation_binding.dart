@@ -6,7 +6,6 @@ class ConfirmationBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<ConfirmationController>(
       () => ConfirmationController(
-        // TODO: Pass required parameters to ConfirmationController
         verificationId: Get.arguments['verificationId'],
         phoneNumber: Get.arguments['phoneNumber'],
         countryCode: Get.arguments['countryCode'],

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class SmsMessageModel {
   final String receiverNumber;
   final String messageBody;
-  final String uid; // Assuming a user ID is available
+  final String uid;
   final bool isSent;
   final Timestamp timestamp;
 

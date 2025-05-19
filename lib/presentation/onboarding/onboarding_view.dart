@@ -33,7 +33,7 @@ class OnboardingView extends GetView<OnboardingController> {
               children: [
                 TextButton(
                   onPressed: controller.skipOnboarding,
-                  child: Text('skip'.tr), 
+                  child: Text('skip'.tr),
                 ),
                 Row(
                   children: List.generate(
@@ -44,9 +44,7 @@ class OnboardingView extends GetView<OnboardingController> {
                         width: controller.selectedPageIndex.value == index ? 12 : 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: controller.selectedPageIndex.value == index
-                              ? Colors.blue // TODO: Use app colors
-                              : Colors.grey,
+                          color: controller.selectedPageIndex.value == index ? Colors.blue : Colors.grey,
                           borderRadius: BorderRadius.circular(8),
                         ),
                       );

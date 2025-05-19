@@ -1,5 +1,4 @@
 part of 'app_pages.dart';
-// DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
 abstract class Routes {
   Routes._();
@@ -8,7 +7,6 @@ abstract class Routes {
   static const CONFIRMATION = _Paths.CONFIRMATION;
   static const HOME = _Paths.HOME;
   static const YOUTUBE = _Paths.YOUTUBE;
-  // Add other routes here
 }
 
 abstract class _Paths {
@@ -18,5 +16,4 @@ abstract class _Paths {
   static const CONFIRMATION = '/confirmation';
   static const HOME = '/home';
   static const YOUTUBE = '/youtube';
-  // Add other paths here
 }

@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:telephony_rakuten_assignment/routes/app_pages.dart'; // Import AppPages for Routes
+import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
 import 'welcome_service.dart';
-import '../confirmation/view/confirmation_view.dart';
 
 class WelcomeController extends GetxController {
   final countryCode = '+90'.obs;
@@ -37,7 +35,4 @@ class WelcomeController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  // TODO: Implement checkUserInFirestore and handle navigation/user creation
-  // Future<void> checkUserInFirestore(String uid) async { ... }
 }

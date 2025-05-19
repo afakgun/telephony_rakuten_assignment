@@ -7,9 +7,7 @@ class WelcomeService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> saveForm(WelcomeFormModel model) async {
-    // Örnek: form verilerini kaydet
     await Future.delayed(Duration(milliseconds: 300));
-    // Şu an için sadece simülasyon
   }
 
   Future<void> sendOtp({
@@ -26,7 +24,6 @@ class WelcomeService {
         onCodeSent(verificationId);
         print('Verification ID: $verificationId');
         print('Resend Token: $resendToken');
-        // Burada SMS kodu gönderildiğinde yapılacak işlemler
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
@@ -50,7 +47,7 @@ class WelcomeService {
     required String lastName,
     required String countryCode,
   }) async {
-   final result = await _firestore.collection('users').doc(uid).set({
+    final result = await _firestore.collection('users').doc(uid).set({
       'uid': uid,
       'phoneNumber': phoneNumber,
       'firstName': firstName,
@@ -58,7 +55,6 @@ class WelcomeService {
       'countryCode': countryCode,
       'createdAt': FieldValue.serverTimestamp(),
     });
-
   }
 
   Future<Map<String, dynamic>?> getUserFromFirestore(String uid) async {

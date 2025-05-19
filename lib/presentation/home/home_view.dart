@@ -12,9 +12,11 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
-          'Ana Sayfa',
+          'homepage'.tr,
           style: TextStyleUtils.blackColorBoldText(20),
         ),
         centerTitle: true,

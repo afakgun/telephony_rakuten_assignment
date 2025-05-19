@@ -72,16 +72,14 @@ class ConfirmationController extends GetxController {
 
   Future<void> checkUserAndNavigate(String uid) async {
     try {
-      final service = WelcomeService(); // Assuming WelcomeService handles Firestore
+      final service = WelcomeService();
       final user = await service.getUserFromFirestore(uid);
 
       if (user != null) {
-        // User exists, navigate to home
         await SharedPreferencesService.setBool('isLoggedIn', true);
         await SharedPreferencesService.setString("user_uid", uid);
         Get.offAllNamed('/home');
       } else {
-        // User does not exist, show dialog for name and surname
         await showNewUserDialog(uid);
       }
     } catch (e) {
@@ -137,7 +135,6 @@ class ConfirmationController extends GetxController {
       textCancel: 'cancel'.tr,
       onCancel: () {
         Get.back();
-        // Handle cancellation if needed
       },
     );
   }

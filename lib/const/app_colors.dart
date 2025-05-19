@@ -9,9 +9,4 @@ class AppColors {
   static const Color textLight = Color(0xFFFFFFFF);
   static const Color error = Color(0xFFD32F2F);
   static const Color warning = Color(0xFFFFA000);
-
-  // Eski renklerin karşılıkları:
-  // Colors.green -> AppColors.green
-  // Colors.grey.shade300 -> AppColors.greyBar
-  // Colors.black87 -> AppColors.textDark
 }

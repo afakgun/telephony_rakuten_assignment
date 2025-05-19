@@ -91,13 +91,12 @@ class YoutubePlayerView extends GetView<YoutubePlayerGetxController> {
                               final max = list.reduce((a, b) => a > b ? a : b);
                               final diff = (max - min).abs();
                               final interval = diff == 0 ? 1 : (diff / 4).ceil();
-                              // 5 aralıklı değerleri hesapla
                               List<int> labels;
                               if (diff == 0) {
                                 labels = List.filled(5, min);
                               } else {
                                 labels = List.generate(5, (i) => min + i * interval);
-                                labels[4] = max; // Sonuncusu kesin max olsun
+                                labels[4] = max;
                               }
                               final show = labels.any((label) => (value - label).abs() < 1);
                               if (!show) return const SizedBox.shrink();
@@ -172,7 +171,6 @@ class YoutubePlayerView extends GetView<YoutubePlayerGetxController> {
   }
 }
 
-// Animasyonlu veri kullanımı barı widget'ı
 class AnimatedDataBar extends StatelessWidget {
   final int usedMb;
   final int maxMb;

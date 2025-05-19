@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'dart:convert';
-import 'dart:io'; // Import dart:io for Platform
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:device_info_plus/device_info_plus.dart'; // Import device_info_plus
+import 'package:device_info_plus/device_info_plus.dart';
 
 import 'package:telephony/telephony.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -16,8 +16,7 @@ import 'package:telephony_rakuten_assignment/core/services/shared_preferences_se
 import 'package:telephony_rakuten_assignment/presentation/home/last_call_model.dart';
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/home_service.dart';
-import 'package:telephony_rakuten_assignment/core/localization/app_translations.dart';
-import 'package:telephony_rakuten_assignment/utils/loading_utils.dart'; // Import localization
+import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
 
 class HomeController extends GetxController {
   final HomeService _homeService = HomeService();
@@ -77,7 +76,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _checkAndroidVersion(); // Check Android version on init
+    _checkAndroidVersion();
     _getUserInfo();
     _getSignalStrength();
     _initNotifications();
@@ -95,13 +94,13 @@ class HomeController extends GetxController {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       if (androidInfo.version.sdkInt < 29) {
         AppDialogUtils.showOnlyContentDialog(
-          title: 'warning'.tr, // Or use localization: 'warning'.tr
-          message: 'android_version_warning'.tr, // Localized warning message
+          title: 'warning'.tr,
+          message: 'android_version_warning'.tr,
           buttonLeftText: '',
           buttonLeftAction: null,
-          buttonRightText: 'Tamam', // Or use localization: 'ok'.tr
+          buttonRightText: 'Tamam',
           buttonRightAction: () => Get.back(),
-          isDismissable: false, // Prevent dismissing by tapping outside
+          isDismissable: false,
         );
       }
     }
@@ -109,7 +108,6 @@ class HomeController extends GetxController {
 
   _getUserInfo() async {
     final userUid = SharedPreferencesService.getString('user_uid');
-    //get user info from firestore
     final user = await FirebaseFirestore.instance.collection('users').doc(userUid).get();
     userName.value = user['firstName'] + ' ' + user['lastName'];
     userPhone.value = user['phoneNumber'];
@@ -171,12 +169,11 @@ class HomeController extends GetxController {
   }) async {
     _isCallActive = false;
 
-    // Log call data to Firebase
     await _homeService.logCallData(
       callDurationInSeconds: callDurationInSeconds,
       receiverNumber: receiverNumber,
       selectedDurationInMinutes: selectedDurationInMinutes,
-      qualityStrengthList: qualityStrengthList.map((e) => e).toList(), // Convert int list to String list
+      qualityStrengthList: qualityStrengthList.map((e) => e).toList(),
     );
   }
 
@@ -303,7 +300,6 @@ class HomeController extends GetxController {
 
       final data = rawData as Map<String, dynamic>;
 
-      // Convert Firestore Timestamp to milliseconds since epoch
       if (data['timestamp'] is Timestamp) {
         data['timestamp'] = (data['timestamp'] as Timestamp).millisecondsSinceEpoch;
       }

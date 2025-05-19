@@ -9,7 +9,6 @@ class SharedPreferencesService {
  
   }
 
-  // String değerleri kaydetmek ve almak için
   static Future<bool> setString(String key, String value) async {
     return await _prefs.setString(key, value);
   }
@@ -18,7 +17,6 @@ class SharedPreferencesService {
     return _prefs.getString(key);
   }
 
-  // int değerleri kaydetmek ve almak için
   static Future<bool> setInt(String key, int value) async {
     return await _prefs.setInt(key, value);
   }
@@ -27,7 +25,6 @@ class SharedPreferencesService {
     return _prefs.getInt(key);
   }
 
-  // bool değerleri kaydetmek ve almak için
   static Future<bool> setBool(String key, bool value) async {
     return await _prefs.setBool(key, value);
   }
@@ -36,7 +33,6 @@ class SharedPreferencesService {
     return _prefs.getBool(key);
   }
 
-  // double değerleri kaydetmek ve almak için
   static Future<bool> setDouble(String key, double value) async {
     return await _prefs.setDouble(key, value);
   }
@@ -45,7 +41,6 @@ class SharedPreferencesService {
     return _prefs.getDouble(key);
   }
 
-  // String listesi değerleri kaydetmek ve almak için
   static Future<bool> setStringList(String key, List<String> value) async {
     return await _prefs.setStringList(key, value);
   }
@@ -54,17 +49,14 @@ class SharedPreferencesService {
     return _prefs.getStringList(key);
   }
 
-  // Bir anahtarı silmek için
   static Future<bool> remove(String key) async {
     return await _prefs.remove(key);
   }
 
-  // Tüm anahtarları silmek için
   static Future<bool> clear() async {
     return await _prefs.clear();
   }
 
-  // Bir anahtarın mevcut olup olmadığını kontrol etmek için
   static bool containsKey(String key) {
     return _prefs.containsKey(key);
   }

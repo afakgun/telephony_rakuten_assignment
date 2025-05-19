@@ -83,22 +83,9 @@ class WelcomeView extends StatelessWidget {
                       onPressed: controller.isFormValid
                           ? () async {
                               await controller.sendOtp();
-                              if (controller.errorMessage.isEmpty) {
-                                // Assuming sendOtp updates a verificationId observable in the controller
-                                // and we navigate after OTP is sent successfully.
-                                // This part needs adjustment based on how sendOtp actually works.
-                                // For now, let's assume sendOtp handles the navigation or provides the verificationId.
-                                // If sendOtp navigates internally, we don't need this here.
-                                // If sendOtp provides verificationId, we need to get it and navigate.
-                                // Let's assume sendOtp in WelcomeService calls the onCodeSent callback which should trigger navigation.
-                                // So, the navigation logic should be in the onCodeSent callback in WelcomeController.
-                                // I will remove the navigation from here and rely on the controller's sendOtp to handle it.
-                              }
+                              if (controller.errorMessage.isEmpty) {}
                             }
                           : null,
-                      child: controller.isLoading.value
-                          ? CircularProgressIndicator() // Show loading indicator
-                          : Text('continue'.tr),
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         textStyle: TextStyle(fontSize: 18),
@@ -106,6 +93,7 @@ class WelcomeView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+                      child: controller.isLoading.value ? CircularProgressIndicator() : Text('continue'.tr),
                     ),
                   )),
             ],

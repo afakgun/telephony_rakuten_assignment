@@ -21,7 +21,7 @@ class OnboardingPage extends StatelessWidget {
         children: [
           Image.asset(
             image,
-            height: 300, // Adjust as needed
+            height: 300,
           ),
           const SizedBox(height: 40),
           Text(
@@ -29,7 +29,7 @@ class OnboardingPage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-            ), // TODO: Use app text styles
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
@@ -38,7 +38,7 @@ class OnboardingPage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
-            ), // TODO: Use app text styles
+            ),
             textAlign: TextAlign.center,
           ),
         ],

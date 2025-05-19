@@ -75,7 +75,6 @@ class WelcomeScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: controller.isFormValid
                           ? () {
-                              // Sonraki ekrana yönlendirme
                               Get.offAllNamed('/home', arguments: {
                                 'receiverNumber': controller.receiverNumber.value,
                                 'duration': controller.duration.value,

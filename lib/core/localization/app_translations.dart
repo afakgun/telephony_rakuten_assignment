@@ -13,7 +13,8 @@ class AppTranslations extends Translations {
           'last_name': 'Soyad',
           'last_name_hint': 'Soyadınızı girin',
           'continue': 'Devam Et',
-          'android_version_warning': 'Bu uygulamanın birçok özelliği Android 10 (API seviyesi 29) ve üzerini desteklemektedir. Cihazınızın Android sürümü düşük olduğu için bazı özellikler düzgün çalışmayabilir.',
+          'android_version_warning':
+              'Bu uygulamanın birçok özelliği Android 10 (API seviyesi 29) ve üzerini desteklemektedir. Cihazınızın Android sürümü düşük olduğu için bazı özellikler düzgün çalışmayabilir.',
           'skip': 'Geç',
           'voice_call_title': 'Sesli Arama',
           'voice_call_desc': 'Belirtilen numaraya sesli arama başlatın ve arama süresini takip edin.',
@@ -107,6 +108,7 @@ class AppTranslations extends Translations {
           'youtube_card_url_label': 'Youtube URL',
           'youtube_card_volume_label': 'MB',
           'youtube_card_button': 'Başlat',
+          'homepage': 'Anasayfa',
         },
         'en': {
           'welcome': 'Welcome',
@@ -118,7 +120,8 @@ class AppTranslations extends Translations {
           'last_name': 'Last Name',
           'last_name_hint': 'Enter your last name',
           'continue': 'Continue',
-          'android_version_warning': 'Many features of this application support Android 10 (API level 29) and above. Some features may not work correctly because your device\'s Android version is low.',
+          'android_version_warning':
+              'Many features of this application support Android 10 (API level 29) and above. Some features may not work correctly because your device\'s Android version is low.',
           'skip': 'Skip',
           'voice_call_title': 'Voice Call',
           'voice_call_desc': 'Initiate a voice call to the specified number and track the call duration.',
@@ -212,6 +215,7 @@ class AppTranslations extends Translations {
           'youtube_card_url_label': 'Youtube URL',
           'youtube_card_volume_label': 'MB',
           'youtube_card_button': 'Start',
+          'homepage': 'Homepage',
         },
         'ar': {
           'welcome': 'مرحبا',
@@ -317,6 +321,7 @@ class AppTranslations extends Translations {
           'youtube_card_url_label': 'رابط يوتيوب',
           'youtube_card_volume_label': 'ميغابايت',
           'youtube_card_button': 'ابدأ',
+          'homepage': 'الصفحة الرئيسية',
         },
         'es': {
           'welcome': 'Bienvenido',
@@ -328,7 +333,8 @@ class AppTranslations extends Translations {
           'last_name': 'Apellido',
           'last_name_hint': 'Ingrese su apellido',
           'continue': 'Continuar',
-          'android_version_warning': 'Muchas características de esta aplicación son compatibles con Android 10 (nivel de API 29) y superior. Es posible que algunas características no funcionen correctamente porque la versión de Android de su dispositivo es baja.',
+          'android_version_warning':
+              'Muchas características de esta aplicación son compatibles con Android 10 (nivel de API 29) y superior. Es posible que algunas características no funcionen correctamente porque la versión de Android de su dispositivo es baja.',
           'skip': 'Saltar',
           'voice_call_title': 'Llamada de voz',
           'voice_call_desc': 'Inicie una llamada de voz al número especificado y rastree la duración de la llamada.',
@@ -418,6 +424,11 @@ class AppTranslations extends Translations {
           'sms_bottomsheet_message_hint': 'Ingrese mensaje',
           'sms_bottomsheet_button': 'Enviar SMS',
           'youtube_card_title': 'Transmisión de Youtube',
+          'youtube_card_desc': 'Comience ingresando la URL de Youtube y la cantidad de datos.',
+          'youtube_card_url_label': 'URL de Youtube',
+          'youtube_card_volume_label': 'MB',
+          'youtube_card_button': 'Iniciar',
+          'homepage': 'Página principal',
         },
         'ja': {
           'welcome': 'ようこそ',
@@ -476,7 +487,7 @@ class AppTranslations extends Translations {
           'error': 'エラー',
           'no_internet': 'インターネット接続がありません。',
           'youtube_cellular_only': 'Youtubeビデオはセルラーデータでのみ開くことができます。Wi-Fi接続をオフにしてください。',
-          'data_limit_exceeded': 'データ制限を超えました', 
+          'data_limit_exceeded': 'データ制限を超えました',
           'data_limit_exceeded_desc': '設定した{maxVolumeMb}MBのデータ制限を超えました。ビデオは停止しました。',
           'invalid_url_or_limit': '無効なビデオURLまたはデータ制限。',
           'otp_not_sent': 'OTPを送信できませんでした: {error}',
@@ -489,7 +500,7 @@ class AppTranslations extends Translations {
           'call_duration_label': '通話時間（分）',
           'call_duration_hint': '例: 2',
           'youtube_volume_label': 'YouTubeボリューム（MB）',
-          'youtube_volume_hint': '例: 50', 
+          'youtube_volume_hint': '例: 50',
           'sms_message_label': 'SMSメッセージ',
           'sms_message_hint': 'メッセージ内容',
           'call_card_title': '通話をかける',
@@ -523,6 +534,7 @@ class AppTranslations extends Translations {
           'youtube_card_url_label': 'Youtube URL',
           'youtube_card_volume_label': 'MB',
           'youtube_card_button': '開始',
+          'homepage': 'ホームページ',
         },
       };
 }

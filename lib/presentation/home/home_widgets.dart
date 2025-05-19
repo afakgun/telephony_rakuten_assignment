@@ -4,6 +4,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'home_controller.dart';
 import '../../utils/textstyle_utils.dart';
+import '../../const/app_colors.dart';
 
 class UserInfoHeader extends StatelessWidget {
   final String? name;
@@ -56,18 +57,19 @@ class CallCard extends StatelessWidget {
       return Card(
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        color: AppColors.primary,
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
             children: [
-              Icon(Icons.phone, size: 48, color: Colors.green[700]),
+              Icon(Icons.phone, size: 48, color: Colors.white),
               const SizedBox(height: 16),
-              Text('call_card_title'.tr, style: TextStyleUtils.blackColorBoldText(18)),
+              Text('call_card_title'.tr, style: TextStyleUtils.whiteColorBoldText(18, [])),
               const SizedBox(height: 8),
-              Text('call_card_desc'.tr, style: TextStyleUtils.blackColorRegularText(14)),
+              Text('call_card_desc'.tr, style: TextStyleUtils.whiteColorRegularText(14)),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -77,7 +79,28 @@ class CallCard extends StatelessWidget {
                     builder: (context) => const CallBottomSheet(),
                   );
                 },
-                child: Text('call_card_button'.tr),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      'call_card_button'.tr,
+                      style: TextStyleUtils.generalGilroyBoldText(16, AppColors.primary),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               Visibility(
@@ -254,18 +277,19 @@ class SmsCard extends StatelessWidget {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
           children: [
-            Icon(Icons.sms, size: 48, color: Colors.blue[700]),
+            Icon(Icons.sms, size: 48, color: AppColors.primary),
             const SizedBox(height: 16),
             Text('send_message'.tr, style: TextStyleUtils.blackColorBoldText(18)),
             const SizedBox(height: 8),
             Text('click_to_send_sms'.tr, style: TextStyleUtils.blackColorRegularText(14)),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -275,7 +299,28 @@ class SmsCard extends StatelessWidget {
                   builder: (context) => const SmsBottomSheet(),
                 );
               },
-              child: Text('send'.tr),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white, width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    'send'.tr,
+                    style: TextStyleUtils.generalGilroyBoldText(16, Colors.white),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -298,8 +343,9 @@ class YoutubeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14.0),
         child: Row(
@@ -344,16 +390,25 @@ class YoutubeCard extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Align(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  backgroundColor: Colors.red[700],
-                ),
-                onPressed: () {
+              child: GestureDetector(
+                onTap: () {
                   controller.startYoutubeStreaming(context);
                 },
-                child: const Icon(Icons.play_arrow, color: Colors.white),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.red[700],
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.play_arrow, color: Colors.white),
+                ),
               ),
             ),
           ],
