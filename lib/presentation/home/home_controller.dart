@@ -1,17 +1,25 @@
+import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'dart:io'; // Import dart:io for Platform
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:device_info_plus/device_info_plus.dart'; // Import device_info_plus
 
 import 'package:telephony/telephony.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/last_call_model.dart';
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
-import 'package:telephony_rakuten_assignment/core/services/firebase_service.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/home_service.dart';
+import 'package:telephony_rakuten_assignment/core/localization/app_translations.dart'; // Import localization
 
 class HomeController extends GetxController {
-  final FirebaseService _firebaseService = FirebaseService();
+  final HomeService _homeService = HomeService();
 
   RxnString userName = RxnString(null);
   RxnString userPhone = RxnString(null);
@@ -21,9 +29,9 @@ class HomeController extends GetxController {
   final youtubeUrlController = TextEditingController();
   final youtubeVolumeController = TextEditingController();
 
-  RxList<int> signalStrength = RxList();
-
   final Telephony telephony = Telephony.instance;
+  RxList<int> signalStrength = RxList();
+  Rxn<LastCallModel> lastCallModel = Rxn<LastCallModel>(null);
 
   Timer? _callTimer;
   int _remainingSeconds = 0;
@@ -32,15 +40,21 @@ class HomeController extends GetxController {
 
   Future<void> sendSms(String phoneNumber, String message) async {
     try {
+      final uid = SharedPreferencesService.getString('user_uid');
       bool permissionsGranted = await telephony.requestPhoneAndSmsPermissions ?? false;
       if (!permissionsGranted) {
         print('SMS izni verilmedi');
         return;
       }
 
-      final SmsSendStatusListener listener = (SendStatus status) {
-        print('SMS gönderim durumu: $status');
-      };
+      listener(SendStatus status) {
+        if (status == SendStatus.SENT || status == SendStatus.DELIVERED) {
+          if (uid != null) {
+            _homeService.sendSms(phoneNumber, message, true, uid);
+          }
+        }
+      }
+
       await telephony.sendSms(
         to: phoneNumber,
         message: message,
@@ -48,25 +62,53 @@ class HomeController extends GetxController {
       );
     } catch (e) {
       print('SMS gönderilemedi: $e');
+      final uid = SharedPreferencesService.getString('user_uid');
+      if (uid != null) {
+        _homeService.sendSms(phoneNumber, message, false, uid);
+      }
     }
   }
 
   @override
   void onInit() {
     super.onInit();
+    _checkAndroidVersion(); // Check Android version on init
     _getUserInfo();
     _getSignalStrength();
     _initNotifications();
   }
 
+  @override
+  onReady() {
+    super.onReady();
+    _getLastCallData();
+  }
+
+  _checkAndroidVersion() async {
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      if (androidInfo.version.sdkInt < 29) {
+        AppDialogUtils.showOnlyContentDialog(
+          title: 'Uyarı', // Or use localization: 'warning'.tr
+          message: 'android_version_warning'.tr, // Localized warning message
+          buttonLeftText: '',
+          buttonLeftAction: null,
+          buttonRightText: 'Tamam', // Or use localization: 'ok'.tr
+          buttonRightAction: () => Get.back(),
+          isDismissable: false, // Prevent dismissing by tapping outside
+        );
+      }
+    }
+  }
+
   _getUserInfo() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userUid = prefs.getString('user_uid');
+    final userUid = SharedPreferencesService.getString('user_uid');
     //get user info from firestore
     final user = await FirebaseFirestore.instance.collection('users').doc(userUid).get();
     userName.value = user['firstName'] + ' ' + user['lastName'];
     userPhone.value = user['phoneNumber'];
-    userCountryCode.value = user['country_code'];
+    userCountryCode.value = user['countryCode'];
   }
 
   Future<void> _initNotifications() async {
@@ -80,28 +122,31 @@ class HomeController extends GetxController {
     await Future.delayed(Duration(seconds: 3));
     _remainingSeconds = durationMinutes * 60;
     _isCallActive = true;
+    RxList<int> signalStrength = RxList();
     _callTimer?.cancel();
     _callTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      print(_remainingSeconds);
-      print(timer.tick);
       final callState = await _getCallState();
       if (callState == CallState.OFFHOOK || callState == CallState.RINGING) {
         _getSignalStrength().then((value) {
           signalStrength.add(value[0].index);
         });
       } else {
-        await _onCallEnded(
-          receiverNumber: receiverNumber,
-          durationInMinutes: durationMinutes,
-          callDurationInMinutes: timer.tick,
-          qualityStrengthList: signalStrength.toList(),
-        );
+        if (_isCallActive) {
+          await _onCallEnded(
+            receiverNumber: receiverNumber,
+            selectedDurationInMinutes: durationMinutes,
+            callDurationInSeconds: timer.tick,
+            qualityStrengthList: signalStrength.toList(),
+          );
+        }
+
         timer.cancel();
       }
       if (_remainingSeconds > 0) {
         _remainingSeconds--;
       } else {
         if (callState == CallState.OFFHOOK || callState == CallState.RINGING) {
+          endCall();
           await _showLocalNotification();
         }
       }
@@ -110,18 +155,18 @@ class HomeController extends GetxController {
 
   Future<void> _onCallEnded({
     required String receiverNumber,
-    required int durationInMinutes,
-    required int callDurationInMinutes,
+    required int selectedDurationInMinutes,
+    required int callDurationInSeconds,
     required List<int> qualityStrengthList,
   }) async {
     _isCallActive = false;
 
     // Log call data to Firebase
-    await _firebaseService.logCallData(
-      callDurationInMinutes: callDurationInMinutes,
+    await _homeService.logCallData(
+      callDurationInSeconds: callDurationInSeconds,
       receiverNumber: receiverNumber,
-      durationInMinutes: durationInMinutes,
-      qualityStrengthList: qualityStrengthList.map((e) => e.toString()).toList(), // Convert int list to String list
+      selectedDurationInMinutes: selectedDurationInMinutes,
+      qualityStrengthList: qualityStrengthList.map((e) => e).toList(), // Convert int list to String list
     );
   }
 
@@ -147,6 +192,18 @@ class HomeController extends GetxController {
   void stopCallTimer() {
     _callTimer?.cancel();
     _isCallActive = false;
+  }
+
+  Future<bool> endCall() async {
+    try {
+      const platform = MethodChannel('com.telephony.rakutenassignment/end_call');
+      final result = await platform.invokeMethod<bool>('endCall');
+      print("is call ended: " + result.toString());
+      return result ?? false;
+    } catch (e) {
+      print("Error ending call: $e");
+      return false;
+    }
   }
 
   Future<List<SignalStrength>> _getSignalStrength() async {
@@ -224,6 +281,29 @@ class HomeController extends GetxController {
   _getServiceState() async {
     ServiceState state = await telephony.serviceState;
     print(state);
+  }
+
+  _getLastCallData() async {
+    try {
+      final userUid = (await SharedPreferences.getInstance()).getString('user_uid');
+      if (userUid == null) return;
+      final rawData = await _homeService.getLastCallDataOfUser(userUid);
+      print(rawData);
+      if (rawData == null) return;
+
+      final data = rawData as Map<String, dynamic>;
+
+      // Convert Firestore Timestamp to milliseconds since epoch
+      if (data['timestamp'] is Timestamp) {
+        data['timestamp'] = (data['timestamp'] as Timestamp).millisecondsSinceEpoch;
+      }
+
+      final encodedData = json.encode(data);
+      LastCallModel model = LastCallModel.fromJson(json.decode(encodedData));
+      lastCallModel.value = model;
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> startYoutubeStreaming() async {

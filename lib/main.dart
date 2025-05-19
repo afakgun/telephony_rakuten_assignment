@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
 import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
 import 'core/localization/app_translations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,8 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final prefs = await SharedPreferences.getInstance();
-  final userUid = prefs.getString('user_uid');
+  await SharedPreferencesService.init();
+
+  final userUid = SharedPreferencesService.getString('user_uid');
   runApp(MyApp(userUid: userUid));
 }
 

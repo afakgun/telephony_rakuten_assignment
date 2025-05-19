@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
 import 'package:telephony_rakuten_assignment/models/user_models.dart';
 import 'package:telephony_rakuten_assignment/presentation/welcome/welcome_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart'; // Import DialogUtils
 
 class ConfirmationController extends GetxController {
   final String verificationId;
@@ -78,9 +77,8 @@ class ConfirmationController extends GetxController {
 
       if (user != null) {
         // User exists, navigate to home
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        await prefs.setString("user_uid", uid);
+        await SharedPreferencesService.setBool('isLoggedIn', true);
+        await SharedPreferencesService.setString("user_uid", uid);
         Get.offAllNamed('/home');
       } else {
         // User does not exist, show dialog for name and surname
@@ -128,11 +126,9 @@ class ConfirmationController extends GetxController {
             lastName: newUser.lastName,
             countryCode: newUser.countryCode,
           );
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('isLoggedIn', true);
-          await prefs.setString("user_uid", uid);
-
-          await prefs.setString("user_credential", json.encode(newUser.toJson()));
+          await SharedPreferencesService.setBool('isLoggedIn', true);
+          await SharedPreferencesService.setString("user_uid", uid);
+          await SharedPreferencesService.setString("user_credential", json.encode(newUser.toJson()));
           Get.offAllNamed('/home');
         } else {
           errorMessage.value = 'Ad ve Soyad boş bırakılamaz.';

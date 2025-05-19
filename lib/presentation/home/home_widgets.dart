@@ -48,9 +48,9 @@ class CallCard extends StatelessWidget {
 
     return Obx(() {
       final kpi = {
-        "Call Duration": "2 dk",
-        "Signal Strength": "${controller.signalStrength} dBm",
-        "Call Quality": _signalToQuality(controller.signalStrength),
+        "Call Duration": controller.lastCallModel.value?.callDurationInSeconds != null ? '${controller.lastCallModel.value?.callDurationInSeconds} sn' : '0 sn',
+        "Dialed Number": controller.lastCallModel.value?.receiverNumber ?? '',
+        "Call Quality": _signalToQuality(controller.lastCallModel.value?.qualityStrengthList),
         "Termination Reason": "Kullanıcı sonlandırdı"
       };
 
@@ -81,23 +81,26 @@ class CallCard extends StatelessWidget {
                 child: const Text('Ara'),
               ),
               const SizedBox(height: 24),
-              Card(
-                color: Colors.grey[100],
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text('KPI Raporu', style: TextStyleUtils.blackColorBoldText(15)),
-                      const SizedBox(height: 8),
-                      ...kpi.entries.map((e) => Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(e.key + ':', style: TextStyleUtils.blackColorRegularText(13)),
-                              Text(e.value, style: TextStyleUtils.blackColorRegularText(13)),
-                            ],
-                          )),
-                    ],
+              Visibility(
+                visible: controller.lastCallModel.value != null,
+                child: Card(
+                  color: Colors.grey[100],
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Text('Son arama bilgileri', style: TextStyleUtils.blackColorBoldText(15)),
+                        const SizedBox(height: 8),
+                        ...kpi.entries.map((e) => Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(e.key + ':', style: TextStyleUtils.blackColorRegularText(13)),
+                                Text(e.value, style: TextStyleUtils.blackColorRegularText(13)),
+                              ],
+                            )),
+                      ],
+                    ),
                   ),
                 ),
               ),

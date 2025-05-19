@@ -13,6 +13,7 @@ class AppTranslations extends Translations {
           'last_name': 'Soyad',
           'last_name_hint': 'Soyadınızı girin',
           'continue': 'Devam Et',
+          'android_version_warning': 'Bu uygulamanın birçok özelliği Android 10 (API seviyesi 29) ve üzerini desteklemektedir. Cihazınızın Android sürümü düşük olduğu için bazı özellikler düzgün çalışmayabilir.',
         },
         'en': {
           'welcome': 'Welcome',
@@ -24,6 +25,7 @@ class AppTranslations extends Translations {
           'last_name': 'Last Name',
           'last_name_hint': 'Enter your last name',
           'continue': 'Continue',
+          'android_version_warning': 'Many features of this application support Android 10 (API level 29) and above. Some features may not work correctly because your device\'s Android version is low.',
         },
         'ar': {
           'welcome': 'مرحبا',
@@ -35,6 +37,7 @@ class AppTranslations extends Translations {
           'last_name': 'اسم العائلة',
           'last_name_hint': 'أدخل اسم العائلة',
           'continue': 'استمر',
+          'android_version_warning': 'العديد من ميزات هذا التطبيق تدعم أندرويد 10 (مستوى API 29) وما فوق. قد لا تعمل بعض الميزات بشكل صحيح لأن إصدار أندرويد لجهازك منخفض.',
         },
         'es': {
           'welcome': 'Bienvenido',
@@ -46,6 +49,7 @@ class AppTranslations extends Translations {
           'last_name': 'Apellido',
           'last_name_hint': 'Ingrese su apellido',
           'continue': 'Continuar',
+          'android_version_warning': 'Muchas características de esta aplicación son compatibles con Android 10 (nivel de API 29) y superior. Es posible que algunas características no funcionen correctamente porque la versión de Android de su dispositivo es baja.',
         },
         'ja': {
           'welcome': 'ようこそ',
@@ -57,6 +61,7 @@ class AppTranslations extends Translations {
           'last_name': '姓',
           'last_name_hint': '姓を入力してください',
           'continue': '続行',
+          'android_version_warning': 'このアプリケーションの多くの機能はAndroid 10（APIレベル29）以降をサポートしています。お使いのデバイスのAndroidバージョンが低いため、一部の機能が正しく動作しない可能性があります。',
         },
       };
 }
