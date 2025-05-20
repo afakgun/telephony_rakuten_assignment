@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/controller/home_controller.dart';
 import 'package:telephony_rakuten_assignment/presentation/youtube/model/youtube_kpi_model.dart';
 import 'package:telephony_rakuten_assignment/presentation/youtube/service/youtube_service.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -129,13 +130,19 @@ class YoutubePlayerGetxController extends GetxController {
       buttonLeftText: '',
       buttonLeftAction: null,
       buttonRightText: 'Tamam',
-      buttonRightAction: () {
+      buttonRightAction: () async {
         Get.back();
         Get.back();
-        closeScreen('data_limit_exceeded');
+        await closeScreen('data_limit_exceeded');
+        _callLastWatchInfo();
       },
       isDismissable: false,
     );
+  }
+
+  _callLastWatchInfo() async {
+    final homeController = Get.isRegistered<HomeController>() ? Get.find<HomeController>() : null;
+    await homeController?.getLastYoutubeKpi();
   }
 
   @override
@@ -143,12 +150,13 @@ class YoutubePlayerGetxController extends GetxController {
     youtubeController.dispose();
     networkSpeedService.dispose();
     if (!volumeLimitReached) {
-      closeScreen('user_exit');
+      closeScreen('user_exit').then((_) {
+        _callLastWatchInfo();
+      });
     }
 
     super.onClose();
   }
 
   /// KPI closeReason için lokalize string döndürür
-
 }

@@ -59,11 +59,11 @@ class HomeController extends GetxController {
   onReady() {
     super.onReady();
     _getLastCallData();
-    _getLastYoutubeKpi();
+    getLastYoutubeKpi();
     _getLastSmsKpi();
   }
 
-  Future<void> _getLastYoutubeKpi() async {
+  Future<void> getLastYoutubeKpi() async {
     final userUid = SharedPreferencesService.getString('user_uid');
     if (userUid == null) return;
     final kpi = await YoutubeService.getLastKpiByUid(userUid);
@@ -141,11 +141,12 @@ class HomeController extends GetxController {
         return;
       }
 
-      listener(SendStatus status) {
+      listener(SendStatus status) async {
         print(status);
         if (status == SendStatus.SENT || status == SendStatus.DELIVERED) {
           if (uid != null) {
-            _homeService.sendSms(phoneNumber, message, true, uid);
+            await _homeService.sendSms(phoneNumber, message, true, uid);
+            _getLastSmsKpi();
           }
         }
       }
@@ -159,7 +160,8 @@ class HomeController extends GetxController {
       print('SMS gönderilemedi: $e');
       final uid = SharedPreferencesService.getString('user_uid');
       if (uid != null) {
-        _homeService.sendSms(phoneNumber, message, false, uid);
+        await _homeService.sendSms(phoneNumber, message, false, uid);
+        _getLastSmsKpi();
       }
     } finally {
       LoadingUtils.stopLoading();

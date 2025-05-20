@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/presentation/youtube/widgets/youtube_animated_bar_widget.dart';
 import 'package:telephony_rakuten_assignment/presentation/youtube/widgets/youtube_data_chart_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/controller/home_controller.dart';
 import '../controller/youtube_player_controller.dart';
 import '../../../utils/textstyle_utils.dart';
 

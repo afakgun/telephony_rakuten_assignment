@@ -84,6 +84,7 @@ class SmsCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('${'message_body'.tr}: ', style: TextStyleUtils.blackColorRegularText(14)),
                           Expanded(child: Text(kpi.message, style: TextStyleUtils.blackColorRegularText(13))),
