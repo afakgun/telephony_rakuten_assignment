@@ -64,7 +64,7 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Arama Bilgileri', style: Theme.of(context).textTheme.titleLarge),
+            Text('call_info'.tr, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 16),
             Row(
               children: [
@@ -95,7 +95,7 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
                       labelText: 'receiver_phone'.tr,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) => v == null || v.isEmpty ? 'Numara giriniz' : null,
+                    validator: (v) => v == null || v.isEmpty ? 'enter_number'.tr : null,
                   ),
                 ),
               ],

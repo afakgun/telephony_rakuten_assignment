@@ -90,11 +90,11 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
                   child: TextFormField(
                     controller: receiverController,
                     keyboardType: TextInputType.phone,
-                    decoration: const InputDecoration(
-                      labelText: 'Alıcı Telefon Numarası',
+                    decoration: InputDecoration(
+                      labelText: 'receiver_phone_number'.tr,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) => v == null || v.isEmpty ? 'Numara giriniz' : null,
+                    validator: (v) => v == null || v.isEmpty ? 'enter_number'.tr : null,
                   ),
                 ),
               ],
@@ -108,7 +108,7 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
                 labelText: 'message_content'.tr,
                 border: OutlineInputBorder(),
               ),
-              validator: (v) => v == null || v.isEmpty ? 'Mesaj giriniz' : null,
+              validator: (v) => v == null || v.isEmpty ? 'enter_message'.tr : null,
             ),
             const SizedBox(height: 24),
             ButtonUtils.cardButton(

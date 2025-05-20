@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/const/app_colors.dart';
 import 'package:telephony_rakuten_assignment/utils/textstyle_utils.dart';
 
@@ -31,7 +32,7 @@ class AnimatedDataBar extends StatelessWidget {
           ),
           Center(
             child: Text(
-              '${(maxMb - usedMb).clamp(0, maxMb)} MB kalan',
+              '${(maxMb - usedMb).clamp(0, maxMb)} ${'mb_left'.tr}',
               style: TextStyleUtils.blackColorMediumText(14),
             ),
           ),

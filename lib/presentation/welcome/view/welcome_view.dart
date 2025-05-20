@@ -20,7 +20,7 @@ class WelcomeView extends StatelessWidget {
           message: msg,
           buttonLeftText: '',
           buttonLeftAction: null,
-          buttonRightText: 'Kapat',
+          buttonRightText: 'close'.tr,
           buttonRightAction: () => Get.back(),
           isDismissable: true,
         );

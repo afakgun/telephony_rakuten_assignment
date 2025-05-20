@@ -108,7 +108,7 @@ class YoutubeDataChartWidget extends StatelessWidget {
                   ),
                   axisNameWidget: Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text('Saniye', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
+                    child: Text('second'.tr, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
                   ),
                   axisNameSize: 24,
                 ),

@@ -33,7 +33,7 @@ class YoutubePlayerView extends GetView<YoutubePlayerGetxController> {
                 )),
             const SizedBox(height: 16),
             Obx(() => Text(
-                  'Anlık Download: ${controller.currentSpeed.value.downloadSpeed} KB/s',
+                  '${'instant_download'.tr} ${controller.currentSpeed.value.downloadSpeed} KB/s',
                   style: TextStyleUtils.blackColorRegularText(16),
                 )),
             const SizedBox(height: 16),

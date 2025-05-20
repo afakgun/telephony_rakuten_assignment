@@ -86,7 +86,7 @@ class CallCard extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('Arama Kalitesi', style: TextStyleUtils.blackColorBoldText(16)),
+                              Text('call_quality'.tr, style: TextStyleUtils.blackColorBoldText(16)),
                               const SizedBox(height: 16),
                               Expanded(
                                 child: qualityList.isNotEmpty
@@ -126,10 +126,10 @@ class CallCard extends StatelessWidget {
                                           ],
                                         ),
                                       )
-                                    : Center(child: Text('Veri yok')),
+                                    : Center(child: Text('no_data'.tr)),
                               ),
                               const SizedBox(height: 8),
-                              Text('X: Süre (sn), Y: Kalite (0-5)', style: TextStyleUtils.blackColorRegularText(12)),
+                              Text('xy_axis_quality'.tr, style: TextStyleUtils.blackColorRegularText(12)),
                             ],
                           ),
                         ),
@@ -167,7 +167,7 @@ class CallCard extends StatelessWidget {
 
   static String _signalToQuality(List<int>? level) {
     if (level == null || level.isEmpty) {
-      return 'Bilinmiyor';
+      return 'unknown'.tr;
     }
     final average = level.reduce((a, b) => a + b) ~/ level.length;
     switch (average) {
@@ -182,7 +182,7 @@ class CallCard extends StatelessWidget {
       case 4:
         return 'very_good'.tr;
       default:
-        return 'Bilinmiyor';
+        return 'unknown'.tr;
     }
   }
 }
