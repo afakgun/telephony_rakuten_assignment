@@ -26,7 +26,7 @@ class CallCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: AppColors.primary,
         child: Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               Icon(Icons.phone, size: 48, color: Colors.white),
@@ -143,7 +143,7 @@ class CallCard extends StatelessWidget {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Text('call_card_last_info'.tr, style: TextStyleUtils.blackColorBoldText(15)),
+                          Text('call_card_last_info'.tr, style: TextStyleUtils.blackColorBoldText(13)),
                           const SizedBox(height: 8),
                           ...kpi.entries.map((e) => Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

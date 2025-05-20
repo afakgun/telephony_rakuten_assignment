@@ -17,11 +17,11 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController receiverController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
-  String selectedCountryCode = '+90';
+  String selectedCountryCode = '+1';
 
   final List<String> countryCodes = [
-    '+90',
     '+1',
+    '+90',
     '+44',
     '+49',
     '+33',
@@ -29,6 +29,15 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
     '+966',
     '+7',
     '+81',
+    '+86',
+    '+994',
+    '+62',
+    '+63',
+    '+65',
+    '+66',
+    '+81',
+    '+82',
+    '+84',
     '+86',
   ];
 
@@ -108,7 +117,6 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
               text: 'start_call'.tr,
               onTap: () async {
                 if (_formKey.currentState?.validate() ?? false) {
-                  
                   final receiver = selectedCountryCode + receiverController.text.trim();
                   final duration = int.tryParse(durationController.text.trim()) ?? 0;
                   await FlutterPhoneDirectCaller.callNumber(receiver);

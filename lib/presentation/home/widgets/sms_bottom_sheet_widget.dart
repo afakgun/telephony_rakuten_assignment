@@ -16,11 +16,11 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController receiverController = TextEditingController();
   final TextEditingController messageController = TextEditingController();
-  String selectedCountryCode = '+90';
+  String selectedCountryCode = '+1';
 
   final List<String> countryCodes = [
-    '+90',
     '+1',
+    '+90',
     '+44',
     '+49',
     '+33',
@@ -28,6 +28,15 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
     '+966',
     '+7',
     '+81',
+    '+86',
+    '+994',
+    '+62',
+    '+63',
+    '+65',
+    '+66',
+    '+81',
+    '+82',
+    '+84',
     '+86',
   ];
 

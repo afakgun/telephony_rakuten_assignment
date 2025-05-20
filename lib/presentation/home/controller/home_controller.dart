@@ -52,7 +52,15 @@ class HomeController extends GetxController {
       await Future.delayed(Duration(seconds: 3));
       bool permissionsGranted = await telephony.requestSmsPermissions ?? false;
       if (!permissionsGranted) {
-        print('SMS izni verilmedi');
+        AppDialogUtils.showOnlyContentDialog(
+          title: 'warning'.tr,
+          message: 'sms_permission_required'.tr,
+          buttonLeftText: '',
+          buttonLeftAction: null,
+          buttonRightText: 'ok'.tr,
+          buttonRightAction: () => Get.back(),
+          isDismissable: false,
+        );
         return;
       }
 
@@ -107,7 +115,7 @@ class HomeController extends GetxController {
   }
 
   _getLastSmsKpi() async {
-    final userUid =  SharedPreferencesService.getString('user_uid');
+    final userUid = SharedPreferencesService.getString('user_uid');
     if (userUid == null) return;
     final kpi = await _homeService.getLastSmsKpiByUid(userUid);
     if (kpi != null) {
@@ -163,7 +171,15 @@ class HomeController extends GetxController {
       LoadingUtils.startLoading(context);
       bool permissionsGranted = await telephony.requestPhonePermissions ?? false;
       if (!permissionsGranted) {
-        print('SMS izni verilmedi');
+        AppDialogUtils.showOnlyContentDialog(
+          title: 'warning'.tr,
+          message: 'phone_permission_required'.tr,
+          buttonLeftText: '',
+          buttonLeftAction: null,
+          buttonRightText: 'ok'.tr,
+          buttonRightAction: () => Get.back(),
+          isDismissable: false,
+        );
         return;
       }
       await Future.delayed(Duration(seconds: 3));
@@ -370,7 +386,18 @@ class HomeController extends GetxController {
       LoadingUtils.startLoading(context);
       final url = youtubeUrlController.text.trim();
       final volumeMb = int.tryParse(youtubeVolumeController.text.trim()) ?? 0;
-      if (url.isEmpty || volumeMb <= 0) return;
+      if (url.isEmpty || volumeMb <= 0) {
+        // warn user to fill field
+        AppDialogUtils.showOnlyContentDialog(
+          title: 'warning'.tr,
+          message: 'fill_fields'.tr,
+          buttonLeftText: '',
+          buttonLeftAction: null,
+          buttonRightText: 'Tamam',
+          buttonRightAction: () => Get.back(),
+        );
+        return;
+      }
 
       final connectivityResult = await Connectivity().checkConnectivity();
       if (connectivityResult.any((element) => element == ConnectivityResult.wifi)) {

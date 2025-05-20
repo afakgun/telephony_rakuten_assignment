@@ -19,7 +19,7 @@ class SmsCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               Icon(Icons.sms, size: 48, color: AppColors.primary),
@@ -72,21 +72,21 @@ class SmsCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('sms_info'.tr, style: TextStyleUtils.blackColorBoldText(16)),
+                      Text('sms_info'.tr, style: TextStyleUtils.blackColorBoldText(13)),
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           Text('${'receiver_number'.tr}: ', style: TextStyleUtils.blackColorRegularText(14)),
-                          Text(kpi.receiverNumber, style: TextStyleUtils.blackColorBoldText(14)),
+                          Text(kpi.receiverNumber, style: TextStyleUtils.blackColorRegularText(13)),
                         ],
                       ),
                       const SizedBox(height: 4),
                       Row(
                         children: [
                           Text('${'message_body'.tr}: ', style: TextStyleUtils.blackColorRegularText(14)),
-                          Expanded(child: Text(kpi.message, style: TextStyleUtils.blackColorBoldText(14))),
+                          Expanded(child: Text(kpi.message, style: TextStyleUtils.blackColorRegularText(13))),
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -101,7 +101,7 @@ class SmsCard extends StatelessWidget {
                           const SizedBox(width: 4),
                           Text(
                             kpi.sent ? 'sent_success'.tr : 'sent_failed'.tr,
-                            style: TextStyleUtils.blackColorBoldText(14),
+                            style: TextStyleUtils.blackColorRegularText(13),
                           ),
                         ],
                       ),
@@ -111,7 +111,7 @@ class SmsCard extends StatelessWidget {
                           Text('${'sent_time'.tr}: ', style: TextStyleUtils.blackColorRegularText(14)),
                           Text(
                             DateFormat('dd.MM.yyyy HH:mm').format(kpi.timestamp),
-                            style: TextStyleUtils.blackColorBoldText(14),
+                            style: TextStyleUtils.blackColorRegularText(13),
                           ),
                         ],
                       ),

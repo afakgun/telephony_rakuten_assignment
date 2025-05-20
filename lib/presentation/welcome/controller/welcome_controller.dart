@@ -5,7 +5,7 @@ import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
 import '../service/welcome_service.dart';
 
 class WelcomeController extends GetxController {
-  final countryCode = '+90'.obs;
+  final countryCode = '+1'.obs;
   final phoneNumber = ''.obs;
 
   final errorMessage = ''.obs;

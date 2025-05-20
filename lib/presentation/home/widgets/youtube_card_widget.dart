@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telephony_rakuten_assignment/const/app_colors.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/controller/home_controller.dart';
 import 'package:telephony_rakuten_assignment/utils/textfield_utils.dart';
 import 'package:telephony_rakuten_assignment/utils/textstyle_utils.dart';
@@ -32,18 +33,23 @@ class YoutubeCard extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: AppColors.primary.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('Son İzlenen Video:', style: TextStyleUtils.blackColorBoldText(13)),
-                    const SizedBox(height: 4),
-                    Text('Video URL: ${kpi.videoUrl}', style: TextStyleUtils.blackColorRegularText(12)),
-                    Text('Ortalama Hız: ${kpi.averageSpeed.toStringAsFixed(2)} Mbps', style: TextStyleUtils.blackColorRegularText(12)),
-                    Text('Kapanma Nedeni: ${kpi.closeReason}', style: TextStyleUtils.blackColorRegularText(12)),
-                    Text('Kullanılan MB: ${kpi.volumeMb}', style: TextStyleUtils.blackColorRegularText(12)),
+                    Text('youtube_card_last_video'.tr, style: TextStyleUtils.blackColorBoldText(13)),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        Text('${'youtube_card_video_url'.tr}: ${kpi.videoUrl}', style: TextStyleUtils.blackColorRegularText(12)),
+                        Text('${'youtube_card_average_speed'.tr}: ${kpi.averageSpeed.toStringAsFixed(2)} Mbps', style: TextStyleUtils.blackColorRegularText(12)),
+                        Text('${'youtube_card_close_reason'.tr}: ${kpi.closeReason}', style: TextStyleUtils.blackColorRegularText(12)),
+                        Text('${'youtube_card_used_mb'.tr}: ${kpi.volumeMb}', style: TextStyleUtils.blackColorRegularText(12)),
+                      ],
+                    ),
                   ],
                 ),
               );
@@ -53,7 +59,7 @@ class YoutubeCard extends StatelessWidget {
                 Expanded(
                   child: TextFieldUtils.cardTextField(
                     controller: controller.youtubeUrlController,
-                    hintText: 'Youtube URL',
+                    hintText: 'youtube_card_url_label'.tr,
                     keyboardType: TextInputType.url,
                   ),
                 ),
@@ -62,7 +68,7 @@ class YoutubeCard extends StatelessWidget {
                   width: 80,
                   child: TextFieldUtils.cardTextField(
                     controller: controller.youtubeVolumeController,
-                    hintText: 'MB',
+                    hintText: 'youtube_card_volume_label'.tr,
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -70,12 +76,12 @@ class YoutubeCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Align(
-              alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
                   controller.startYoutubeStreaming(context);
                 },
                 child: Container(
+                  width: Get.width,
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.red[700],
