@@ -5,26 +5,13 @@ import 'package:telephony_rakuten_assignment/presentation/confirmation/controlle
 import '../../../utils/button_utils.dart';
 import '../../../const/app_colors.dart';
 
-class ConfirmationView extends StatelessWidget {
-  final String verificationId;
-  final String phoneNumber;
-
-  final String countryCode;
-
+class ConfirmationView extends GetView<ConfirmationController> {
   const ConfirmationView({
     super.key,
-    required this.verificationId,
-    required this.phoneNumber,
-    required this.countryCode,
   });
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ConfirmationController(
-      verificationId: verificationId,
-      phoneNumber: phoneNumber,
-      countryCode: countryCode,
-    ));
     return Scaffold(
       appBar: AppBar(
         title: Text('verification_code'.tr),
@@ -44,12 +31,7 @@ class ConfirmationView extends StatelessWidget {
             ConfirmationCodeInput(
               onChanged: controller.onCodeChanged,
             ),
-            const SizedBox(height: 16),
-            Obx(() => TextButton(
-                  onPressed: controller.isLoading.value ? null : controller.resendCode,
-                  child: Text('resend'.tr),
-                )),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             Obx(() => ButtonUtils.cardButton(
                   onTap: controller.isCodeValid.value ? controller.onConfirmPressed : null,
                   backgroundColor: AppColors.primary,
@@ -62,6 +44,10 @@ class ConfirmationView extends StatelessWidget {
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         )
                       : Text('continue'.tr, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                )),
+            Obx(() => TextButton(
+                  onPressed: controller.isLoading.value ? null : controller.resendCode,
+                  child: Text('resend'.tr),
                 )),
             Obx(() => controller.errorMessage.value.isNotEmpty
                 ? Padding(

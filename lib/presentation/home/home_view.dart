@@ -20,6 +20,15 @@ class HomeView extends StatelessWidget {
           style: TextStyleUtils.blackColorBoldText(20),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.black),
+            tooltip: 'logout'.tr,
+            onPressed: () {
+              controller.logout();
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),

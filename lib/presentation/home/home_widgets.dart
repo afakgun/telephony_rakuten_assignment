@@ -6,6 +6,8 @@ import 'home_controller.dart';
 import '../../utils/textstyle_utils.dart';
 import '../../utils/button_utils.dart';
 import '../../const/app_colors.dart';
+import '../../utils/textfield_utils.dart';
+import '../../utils/dropdown_utils.dart';
 
 class UserInfoHeader extends StatelessWidget {
   final String? name;
@@ -209,19 +211,21 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
             const SizedBox(height: 16),
             Row(
               children: [
-                DropdownButton<String>(
-                  value: selectedCountryCode,
-                  items: countryCodes
-                      .map((code) => DropdownMenuItem(
-                            value: code,
-                            child: Text(code),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCountryCode = value!;
-                    });
-                  },
+                Flexible(
+                  child: DropdownUtils.cardDropdown<String>(
+                    value: selectedCountryCode,
+                    items: countryCodes
+                        .map((code) => DropdownMenuItem(
+                              value: code,
+                              child: Text(code),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCountryCode = value!;
+                      });
+                    },
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -361,26 +365,19 @@ class YoutubeCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
+                        child: TextFieldUtils.cardTextField(
                           controller: controller.youtubeUrlController,
-                          decoration: const InputDecoration(
-                            labelText: 'Youtube URL',
-                            border: OutlineInputBorder(),
-                            isDense: true,
-                          ),
+                          hintText: 'Youtube URL',
+                          keyboardType: TextInputType.url,
                         ),
                       ),
                       const SizedBox(width: 8),
                       SizedBox(
                         width: 80,
-                        child: TextField(
+                        child: TextFieldUtils.cardTextField(
                           controller: controller.youtubeVolumeController,
+                          hintText: 'MB',
                           keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            labelText: 'MB',
-                            border: OutlineInputBorder(),
-                            isDense: true,
-                          ),
                         ),
                       ),
                     ],
@@ -464,19 +461,21 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
             const SizedBox(height: 16),
             Row(
               children: [
-                DropdownButton<String>(
-                  value: selectedCountryCode,
-                  items: countryCodes
-                      .map((code) => DropdownMenuItem(
-                            value: code,
-                            child: Text(code),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCountryCode = value!;
-                    });
-                  },
+                Flexible(
+                  child: DropdownUtils.cardDropdown<String>(
+                    value: selectedCountryCode,
+                    items: countryCodes
+                        .map((code) => DropdownMenuItem(
+                              value: code,
+                              child: Text(code),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCountryCode = value!;
+                      });
+                    },
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(

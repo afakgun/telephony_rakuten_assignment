@@ -49,23 +49,26 @@ class WelcomeView extends StatelessWidget {
               SizedBox(height: 32),
               Row(
                 children: [
-                  CountryCodeDropdown(
-                    value: controller.countryCode.value,
-                    onChanged: (value) {
-                      if (value != null) controller.countryCode.value = value;
-                    },
-                    items: [
-                      CountryCodeItem(code: '+90', flagAsset: 'assets/svg/flags/tr.svg'),
-                      CountryCodeItem(code: '+1', flagAsset: 'assets/svg/flags/us.svg'),
-                      CountryCodeItem(code: '+44', flagAsset: 'assets/svg/flags/gb.svg'),
-                      CountryCodeItem(code: '+34', flagAsset: 'assets/svg/flags/es.svg'),
-                      CountryCodeItem(code: '+81', flagAsset: 'assets/svg/flags/jp.svg'),
-                      CountryCodeItem(code: '+49', flagAsset: 'assets/svg/flags/de.svg'),
-                      CountryCodeItem(code: '+971', flagAsset: 'assets/svg/flags/ae.svg'),
-                      CountryCodeItem(code: '+966', flagAsset: 'assets/svg/flags/sa.svg'),
-                      CountryCodeItem(code: '+20', flagAsset: 'assets/svg/flags/eg.svg'),
-                      CountryCodeItem(code: '+7', flagAsset: 'assets/svg/flags/ru.svg'),
-                    ],
+                  Container(
+                    width: Get.width * 0.25,
+                    child: CountryCodeDropdown(
+                      value: controller.countryCode.value,
+                      onChanged: (value) {
+                        if (value != null) controller.countryCode.value = value;
+                      },
+                      items: [
+                        CountryCodeItem(code: '+90', flagAsset: 'assets/svg/flags/tr.svg'),
+                        CountryCodeItem(code: '+1', flagAsset: 'assets/svg/flags/us.svg'),
+                        CountryCodeItem(code: '+44', flagAsset: 'assets/svg/flags/gb.svg'),
+                        CountryCodeItem(code: '+34', flagAsset: 'assets/svg/flags/es.svg'),
+                        CountryCodeItem(code: '+81', flagAsset: 'assets/svg/flags/jp.svg'),
+                        CountryCodeItem(code: '+49', flagAsset: 'assets/svg/flags/de.svg'),
+                        CountryCodeItem(code: '+971', flagAsset: 'assets/svg/flags/ae.svg'),
+                        CountryCodeItem(code: '+966', flagAsset: 'assets/svg/flags/sa.svg'),
+                        CountryCodeItem(code: '+20', flagAsset: 'assets/svg/flags/eg.svg'),
+                        CountryCodeItem(code: '+7', flagAsset: 'assets/svg/flags/ru.svg'),
+                      ],
+                    ),
                   ),
                   SizedBox(width: 12),
                   Expanded(

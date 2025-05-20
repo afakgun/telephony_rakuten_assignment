@@ -17,6 +17,8 @@ import 'package:telephony_rakuten_assignment/presentation/home/last_call_model.d
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/home_service.dart';
 import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
+import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
+import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
 
 class HomeController extends GetxController {
   final HomeService _homeService = HomeService();
@@ -310,6 +312,11 @@ class HomeController extends GetxController {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> logout() async {
+    await SharedPreferencesService.remove('user_uid');
+    Get.offAllNamed(Routes.WELCOME);
   }
 
   Future<void> startYoutubeStreaming(BuildContext context) async {
