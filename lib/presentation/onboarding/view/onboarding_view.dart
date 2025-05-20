@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:telephony_rakuten_assignment/presentation/onboarding/onboarding_controller.dart';
-import 'package:telephony_rakuten_assignment/presentation/onboarding/onboarding_widgets.dart';
+import 'package:telephony_rakuten_assignment/presentation/onboarding/controller/onboarding_controller.dart';
+import 'package:telephony_rakuten_assignment/presentation/onboarding/widgets/onboarding_widgets.dart';
 
 class OnboardingView extends GetView<OnboardingController> {
   const OnboardingView({Key? key}) : super(key: key);

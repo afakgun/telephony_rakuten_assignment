@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telephony_rakuten_assignment/presentation/welcome/model/country_code_model.dart';
+import 'package:telephony_rakuten_assignment/presentation/welcome/widgets/welcome_textfield_widget.dart';
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
-import 'welcome_controller.dart';
-import 'welcome_widgets.dart';
-import '../../utils/button_utils.dart';
-import '../../const/app_colors.dart';
+import '../controller/welcome_controller.dart';
+import '../widgets/country_code_dropdown_widget.dart';
+import '../../../utils/button_utils.dart';
+import '../../../const/app_colors.dart';
 
 class WelcomeView extends StatelessWidget {
   final WelcomeController controller = Get.put(WelcomeController());

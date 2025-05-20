@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
-import '../../models/sms_message_model.dart';
-import '../../core/services/firestore_service.dart';
+import '../model/sms_message_model.dart';
+import '../../../core/services/firestore_service.dart';
 
 class HomeService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

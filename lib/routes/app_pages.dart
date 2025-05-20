@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/presentation/confirmation/view/confirmation_view.dart';
-import 'package:telephony_rakuten_assignment/presentation/home/home_view.dart';
-import 'package:telephony_rakuten_assignment/presentation/onboarding/onboarding_binding.dart';
-import 'package:telephony_rakuten_assignment/presentation/onboarding/onboarding_view.dart';
-import 'package:telephony_rakuten_assignment/presentation/welcome/welcome_binding.dart';
-import 'package:telephony_rakuten_assignment/presentation/welcome/welcome_view.dart';
-import 'package:telephony_rakuten_assignment/presentation/confirmation/confirmation_binding.dart';
-import 'package:telephony_rakuten_assignment/presentation/home/home_binding.dart';
-import 'package:telephony_rakuten_assignment/presentation/youtube/youtube_player_view.dart';
-import 'package:telephony_rakuten_assignment/presentation/youtube/youtube_binding.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/view/home_view.dart';
+import 'package:telephony_rakuten_assignment/presentation/onboarding/binding/onboarding_binding.dart';
+import 'package:telephony_rakuten_assignment/presentation/onboarding/view/onboarding_view.dart';
+import 'package:telephony_rakuten_assignment/presentation/welcome/binding/welcome_binding.dart';
+import 'package:telephony_rakuten_assignment/presentation/welcome/view/welcome_view.dart';
+import 'package:telephony_rakuten_assignment/presentation/confirmation/binding/confirmation_binding.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/binding/home_binding.dart';
+import 'package:telephony_rakuten_assignment/presentation/youtube/view/youtube_player_view.dart';
+import 'package:telephony_rakuten_assignment/presentation/youtube/binding/youtube_binding.dart';
 
 part 'app_routes.dart';
 

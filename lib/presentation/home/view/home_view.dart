@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/widgets/call_card_widget.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/widgets/sms_card_widget.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/widgets/user_info_header_widget.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/widgets/youtube_card_widget.dart';
 import 'package:telephony_rakuten_assignment/utils/country_code_utils.dart';
-import 'home_controller.dart';
-import 'home_widgets.dart';
-import '../../utils/textstyle_utils.dart';
+import '../controller/home_controller.dart';
+import '../../../utils/textstyle_utils.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

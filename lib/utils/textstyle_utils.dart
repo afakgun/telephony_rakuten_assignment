@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'font_family_const.dart';
+import '../const/font_family_const.dart';
 import '../../const/app_colors.dart';
 
 class TextStyleUtils {

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
 import 'package:telephony_rakuten_assignment/models/user_models.dart';
-import 'package:telephony_rakuten_assignment/presentation/welcome/welcome_service.dart';
+import 'package:telephony_rakuten_assignment/presentation/welcome/service/welcome_service.dart';
 import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
 
 class ConfirmationController extends GetxController {

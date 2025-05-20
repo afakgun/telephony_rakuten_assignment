@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
 import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
-import 'welcome_service.dart';
+import '../service/welcome_service.dart';
 
 class WelcomeController extends GetxController {
   final countryCode = '+90'.obs;

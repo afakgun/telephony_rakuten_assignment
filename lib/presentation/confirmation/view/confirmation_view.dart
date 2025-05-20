@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:telephony_rakuten_assignment/presentation/confirmation/confirmation_widgets.dart';
+import 'package:telephony_rakuten_assignment/presentation/confirmation/widgets/confirmation_code_input_widget.dart';
 import 'package:telephony_rakuten_assignment/presentation/confirmation/controller/confirmation_controller.dart';
 import '../../../utils/button_utils.dart';
 import '../../../const/app_colors.dart';
