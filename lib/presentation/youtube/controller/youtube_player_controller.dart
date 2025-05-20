@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
+import 'package:telephony_rakuten_assignment/presentation/youtube/model/youtube_kpi_model.dart';
+import 'package:telephony_rakuten_assignment/presentation/youtube/service/youtube_service.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:traffic_stats/traffic_stats.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +19,64 @@ class YoutubePlayerGetxController extends GetxController {
   final RxnString url = RxnString();
   final NetworkSpeedService networkSpeedService = NetworkSpeedService();
   final RxList<int> downloadSpeedList = <int>[].obs;
+  final RxList<double> speedSamples = <double>[].obs; // Mbps
+  final RxList<double> kbSpeeds = <double>[].obs; // KB/s
+  final RxInt usedVolumeMb = 0.obs;
+  final RxString videoUrl = ''.obs;
+  final RxString closeReason = ''.obs;
+  final RxInt usedMb = 0.obs;
+  bool volumeLimitReached = false;
+
+  // Ortalama internet hızını hesapla
+  double get averageSpeed {
+    if (speedSamples.isEmpty) return 0;
+    return speedSamples.reduce((a, b) => a + b) / speedSamples.length;
+  }
+
+  // Hız örneği ekle
+  void addSpeedSample(double speedMbps) {
+    speedSamples.add(speedMbps);
+    kbSpeeds.add(speedMbps * 1024 / 8); // Mbps -> KB/s
+  }
+
+  // Volume güncelle
+  void setUsedVolume(int mb) {
+    usedVolumeMb.value = mb;
+  }
+
+  // Video url güncelle
+  void setVideoUrl(String url) {
+    videoUrl.value = url;
+  }
+
+  // Kapanma sebebi güncelle
+  void setCloseReason(String reason) {
+    closeReason.value = reason;
+  }
+
+  // Ekranı kapat
+  Future<void> closeScreen(String reason) async {
+    setCloseReason(reason);
+    await sendKpisToFirebase();
+  }
+
+  // KPI'ları Firebase'e gönder
+  Future<void> sendKpisToFirebase() async {
+    final kpi = YoutubeKpiModel(
+      averageSpeed: averageSpeed,
+      volumeMb: usedVolumeMb.value,
+      videoUrl: videoUrl.value,
+      closeReason: closeReason.value,
+      kbSpeeds: kbSpeeds.toList(),
+    );
+    await YoutubeService.sendKpiToFirebase(kpi);
+  }
 
   @override
   void onInit() {
+    final args = Get.arguments ?? {};
+    setVideoUrl(args['url'] ?? '');
+    setUsedVolume(args['volumeMb'] ?? 0);
     super.onInit();
 
     url.value = Get.arguments['url'];
@@ -50,15 +109,17 @@ class YoutubePlayerGetxController extends GetxController {
       print('Download Speed: ${speedData.downloadSpeed} KB/s');
       print('Upload Speed: ${speedData.uploadSpeed} KB/s');
       currentSpeed.value = speedData;
-      usedData.value += speedData.downloadSpeed + speedData.uploadSpeed;
+      addSpeedSample((speedData.downloadSpeed * 8) / 1024); // KB/s -> Mbps
+      usedData.value += speedData.downloadSpeed;
       downloadSpeedList.add(speedData.downloadSpeed);
       if (downloadSpeedList.length > 30) {
         downloadSpeedList.removeAt(0);
       }
       final maxVol = maxVolumeMb.value ?? 0;
-      if ((usedData.value ~/ 1024) >= maxVol && !isDialogShown) {
+      // 1 MB = 1024 KB
+      if ((usedData.value ~/ 1024) >= maxVol && !volumeLimitReached) {
+        volumeLimitReached = true;
         youtubeController.pause();
-        isDialogShown = true;
         _showLimitDialog();
       }
     });
@@ -74,6 +135,7 @@ class YoutubePlayerGetxController extends GetxController {
       buttonRightAction: () {
         Get.back();
         Get.back();
+        closeScreen('data_limit_exceeded');
       },
       isDismissable: false,
     );
@@ -83,6 +145,10 @@ class YoutubePlayerGetxController extends GetxController {
   void onClose() {
     youtubeController.dispose();
     networkSpeedService.dispose();
+    if (!volumeLimitReached) {
+      closeScreen('user_exit');
+    }
+
     super.onClose();
   }
 }

@@ -4,9 +4,7 @@ import 'package:telephony_rakuten_assignment/presentation/youtube/widgets/youtub
 import 'package:telephony_rakuten_assignment/presentation/youtube/widgets/youtube_data_chart_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../controller/youtube_player_controller.dart';
-import '../../../const/app_colors.dart';
 import '../../../utils/textstyle_utils.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class YoutubePlayerView extends GetView<YoutubePlayerGetxController> {
   const YoutubePlayerView({Key? key}) : super(key: key);
@@ -39,7 +37,7 @@ class YoutubePlayerView extends GetView<YoutubePlayerGetxController> {
                   style: TextStyleUtils.blackColorRegularText(16),
                 )),
             const SizedBox(height: 16),
-            Obx(() => YoutubeDataChartWidget(controller: controller)),
+            YoutubeDataChartWidget(controller: controller),
           ],
         ),
       ),

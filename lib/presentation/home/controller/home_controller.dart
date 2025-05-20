@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:telephony/telephony.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -17,7 +18,6 @@ import 'package:telephony_rakuten_assignment/presentation/home/model/last_call_m
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/service/home_service.dart';
 import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
-import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
 import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
 
 class HomeController extends GetxController {
@@ -45,7 +45,7 @@ class HomeController extends GetxController {
       final uid = SharedPreferencesService.getString('user_uid');
       LoadingUtils.startLoading(context);
       await Future.delayed(Duration(seconds: 3));
-      bool permissionsGranted = await telephony.requestPhoneAndSmsPermissions ?? false;
+      bool permissionsGranted = await telephony.requestSmsPermissions ?? false;
       if (!permissionsGranted) {
         print('SMS izni verilmedi');
         return;
@@ -82,6 +82,7 @@ class HomeController extends GetxController {
     _getUserInfo();
     _getSignalStrength();
     _initNotifications();
+    _requestNotificationPermissionIfNeeded();
   }
 
   @override
@@ -123,9 +124,21 @@ class HomeController extends GetxController {
     await flutterLocalNotificationsPlugin!.initialize(initializationSettings);
   }
 
+  Future<void> _requestNotificationPermissionIfNeeded() async {
+    final status = await Permission.notification.status;
+    if (!status.isGranted) {
+      await Permission.notification.request();
+    }
+  }
+
   Future<void> startCallTimer(int durationMinutes, String receiverNumber, BuildContext context) async {
     try {
       LoadingUtils.startLoading(context);
+      bool permissionsGranted = await telephony.requestPhonePermissions ?? false;
+      if (!permissionsGranted) {
+        print('SMS izni verilmedi');
+        return;
+      }
       await Future.delayed(Duration(seconds: 3));
       _remainingSeconds = durationMinutes * 60;
       _isCallActive = true;
@@ -146,6 +159,7 @@ class HomeController extends GetxController {
               qualityStrengthList: signalStrength.toList(),
             );
           }
+          _getLastCallData();
 
           timer.cancel();
         }
@@ -226,9 +240,14 @@ class HomeController extends GetxController {
   }
 
   Future<CallState> _getCallState() async {
-    CallState state = await telephony.callState;
-    print(state);
-    return state;
+    try {
+      var state = await telephony.callState;
+      print(state);
+      return state;
+    } catch (e) {
+      print("Call state error: $e");
+      return CallState.IDLE;
+    }
   }
 
   _getDataActivity() async {

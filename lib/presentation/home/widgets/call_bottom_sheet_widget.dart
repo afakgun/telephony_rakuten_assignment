@@ -59,7 +59,8 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
             const SizedBox(height: 16),
             Row(
               children: [
-                Flexible(
+                Expanded(
+                  flex: 1,
                   child: DropdownUtils.cardDropdown<String>(
                     value: selectedCountryCode,
                     items: countryCodes
@@ -77,6 +78,7 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
+                  flex: 3,
                   child: TextFormField(
                     controller: receiverController,
                     keyboardType: TextInputType.phone,
@@ -90,20 +92,23 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
               ],
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: durationController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'duration_min'.tr,
-                border: OutlineInputBorder(),
+            Container(
+              child: TextFormField(
+                controller: durationController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'duration_min'.tr,
+                  border: OutlineInputBorder(),
+                ),
+                validator: (v) => v == null || v.isEmpty ? 'enter_duration'.tr : null,
               ),
-              validator: (v) => v == null || v.isEmpty ? 'enter_duration'.tr : null,
             ),
             const SizedBox(height: 24),
             ButtonUtils.cardButton(
               text: 'start_call'.tr,
               onTap: () async {
                 if (_formKey.currentState?.validate() ?? false) {
+                  
                   final receiver = selectedCountryCode + receiverController.text.trim();
                   final duration = int.tryParse(durationController.text.trim()) ?? 0;
                   await FlutterPhoneDirectCaller.callNumber(receiver);
