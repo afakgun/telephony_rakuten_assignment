@@ -15,10 +15,20 @@ class CallCard extends StatelessWidget {
 
     return Obx(() {
       final kpi = {
-        "call_card_duration".tr: controller.lastCallModel.value?.callDurationInSeconds != null ? '${controller.lastCallModel.value?.callDurationInSeconds} sn' : '0 sn',
+        "call_card_duration".tr: controller.lastCallModel.value?.callDurationInSeconds != null
+            ? '${controller.lastCallModel.value?.callDurationInSeconds} ${"second_short".tr}'
+            : '0 ${"second_short".tr}',
+        "call_card_selected_duration".tr: controller.lastCallModel.value?.selectedDurationInMinutes != null
+            ? '${controller.lastCallModel.value?.selectedDurationInMinutes} ${"minute_short".tr}'
+            : '0 ${"minute_short".tr}',
         "call_card_number".tr: controller.lastCallModel.value?.receiverNumber ?? '',
         "call_card_quality".tr: _signalToQuality(controller.lastCallModel.value?.qualityStrengthList),
-        "call_card_termination".tr: "termination_reason_user".tr
+        "call_card_termination".tr: controller.lastCallModel.value != null
+            ? _terminationStatus(
+                controller.lastCallModel.value!.callDurationInSeconds,
+                controller.lastCallModel.value!.selectedDurationInMinutes,
+              )
+            : '',
       };
 
       return Card(
@@ -147,9 +157,10 @@ class CallCard extends StatelessWidget {
                           const SizedBox(height: 8),
                           ...kpi.entries.map((e) => Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(e.key + ':', style: TextStyleUtils.blackColorRegularText(13)),
-                                  Text(e.value, style: TextStyleUtils.blackColorRegularText(13)),
+                                  Container(width: Get.width * 0.3, child: Text(e.value, style: TextStyleUtils.blackColorRegularText(13))),
                                 ],
                               )),
                         ],
@@ -163,6 +174,17 @@ class CallCard extends StatelessWidget {
         ),
       );
     });
+  }
+
+  static String _terminationStatus(int callDurationInSeconds, int selectedDurationInMinutes) {
+    final selectedDurationInSeconds = selectedDurationInMinutes * 60;
+    if (callDurationInSeconds > selectedDurationInSeconds) {
+      return 'call_card_termination_late'.tr;
+    } else if (callDurationInSeconds < selectedDurationInSeconds) {
+      return 'call_card_termination_early'.tr;
+    } else {
+      return 'call_card_termination_exact'.tr;
+    }
   }
 
   static String _signalToQuality(List<int>? level) {

@@ -46,7 +46,7 @@ class YoutubeCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text('${'youtube_card_video_url'.tr}: ${kpi.videoUrl}', style: TextStyleUtils.blackColorRegularText(12)),
                         Text('${'youtube_card_average_speed'.tr}: ${kpi.averageSpeed.toStringAsFixed(2)} Mbps', style: TextStyleUtils.blackColorRegularText(12)),
-                        Text('${'youtube_card_close_reason'.tr}: ${kpi.closeReason}', style: TextStyleUtils.blackColorRegularText(12)),
+                        Text('${'youtube_card_close_reason'.tr}: ${controller.getLocalizedCloseReason(kpi.closeReason)}', style: TextStyleUtils.blackColorRegularText(12)),
                         Text('${'youtube_card_used_mb'.tr}: ${kpi.volumeMb}', style: TextStyleUtils.blackColorRegularText(12)),
                       ],
                     ),

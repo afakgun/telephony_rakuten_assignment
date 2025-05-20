@@ -148,4 +148,7 @@ class YoutubePlayerGetxController extends GetxController {
 
     super.onClose();
   }
+
+  /// KPI closeReason için lokalize string döndürür
+
 }

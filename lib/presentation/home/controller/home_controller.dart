@@ -45,50 +45,6 @@ class HomeController extends GetxController {
   bool _isCallActive = false;
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
-  Future<void> sendSms(String phoneNumber, String message, BuildContext context) async {
-    try {
-      final uid = SharedPreferencesService.getString('user_uid');
-      LoadingUtils.startLoading(context);
-      await Future.delayed(Duration(seconds: 3));
-      bool permissionsGranted = await telephony.requestSmsPermissions ?? false;
-      if (!permissionsGranted) {
-        AppDialogUtils.showOnlyContentDialog(
-          title: 'warning'.tr,
-          message: 'sms_permission_required'.tr,
-          buttonLeftText: '',
-          buttonLeftAction: null,
-          buttonRightText: 'ok'.tr,
-          buttonRightAction: () => Get.back(),
-          isDismissable: false,
-        );
-        return;
-      }
-
-      listener(SendStatus status) {
-        print(status);
-        if (status == SendStatus.SENT || status == SendStatus.DELIVERED) {
-          if (uid != null) {
-            _homeService.sendSms(phoneNumber, message, true, uid);
-          }
-        }
-      }
-
-      await telephony.sendSms(
-        to: phoneNumber,
-        message: message,
-        statusListener: listener,
-      );
-    } catch (e) {
-      print('SMS gönderilemedi: $e');
-      final uid = SharedPreferencesService.getString('user_uid');
-      if (uid != null) {
-        _homeService.sendSms(phoneNumber, message, false, uid);
-      }
-    } finally {
-      LoadingUtils.stopLoading();
-    }
-  }
-
   @override
   void onInit() {
     super.onInit();
@@ -108,7 +64,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> _getLastYoutubeKpi() async {
-    final userUid = await SharedPreferencesService.getString('user_uid');
+    final userUid = SharedPreferencesService.getString('user_uid');
     if (userUid == null) return;
     final kpi = await YoutubeService.getLastKpiByUid(userUid);
     youtubeKpiModel.value = kpi;
@@ -163,6 +119,50 @@ class HomeController extends GetxController {
     final status = await Permission.notification.status;
     if (!status.isGranted) {
       await Permission.notification.request();
+    }
+  }
+
+  Future<void> sendSms(String phoneNumber, String message, BuildContext context) async {
+    try {
+      final uid = SharedPreferencesService.getString('user_uid');
+      LoadingUtils.startLoading(context);
+      await Future.delayed(Duration(seconds: 3));
+      bool permissionsGranted = await telephony.requestSmsPermissions ?? false;
+      if (!permissionsGranted) {
+        AppDialogUtils.showOnlyContentDialog(
+          title: 'warning'.tr,
+          message: 'sms_permission_required'.tr,
+          buttonLeftText: '',
+          buttonLeftAction: null,
+          buttonRightText: 'ok'.tr,
+          buttonRightAction: () => Get.back(),
+          isDismissable: false,
+        );
+        return;
+      }
+
+      listener(SendStatus status) {
+        print(status);
+        if (status == SendStatus.SENT || status == SendStatus.DELIVERED) {
+          if (uid != null) {
+            _homeService.sendSms(phoneNumber, message, true, uid);
+          }
+        }
+      }
+
+      await telephony.sendSms(
+        to: phoneNumber,
+        message: message,
+        statusListener: listener,
+      );
+    } catch (e) {
+      print('SMS gönderilemedi: $e');
+      final uid = SharedPreferencesService.getString('user_uid');
+      if (uid != null) {
+        _homeService.sendSms(phoneNumber, message, false, uid);
+      }
+    } finally {
+      LoadingUtils.stopLoading();
     }
   }
 
@@ -277,11 +277,6 @@ class HomeController extends GetxController {
     return strenghts;
   }
 
-  _getCellularDataState() async {
-    DataState state = await telephony.cellularDataState;
-    print(state);
-  }
-
   Future<CallState> _getCallState() async {
     try {
       var state = await telephony.callState;
@@ -291,67 +286,6 @@ class HomeController extends GetxController {
       print("Call state error: $e");
       return CallState.IDLE;
     }
-  }
-
-  _getDataActivity() async {
-    DataActivity activity = await telephony.dataActivity;
-
-    print(activity);
-  }
-
-  _getNetworkOperatorName() async {
-    String? name = await telephony.networkOperatorName;
-    print(name);
-  }
-
-  _getNetworkType() async {
-    NetworkType type = await telephony.dataNetworkType;
-    print(type);
-  }
-
-  _getPhoneType() async {
-    PhoneType type = await telephony.phoneType;
-    print(type);
-  }
-
-  _getSimState() async {
-    SimState state = await telephony.simState;
-    print(state);
-  }
-
-  _getSimOperatorName() async {
-    String? name = await telephony.simOperatorName;
-    print(name);
-  }
-
-  _isSmsCapable() async {
-    bool? isSmsCapable = await telephony.isSmsCapable;
-    print(isSmsCapable);
-  }
-
-  _getNetworkOperator() async {
-    String? operator = await telephony.networkOperator;
-    print(operator);
-  }
-
-  _getSimOperator() async {
-    String? simOperator = await telephony.simOperator;
-    print(simOperator);
-  }
-
-  _isNetworkRoaming() async {
-    bool? isRoaming = await telephony.isNetworkRoaming;
-    print(isRoaming);
-  }
-
-  _getSignalStrengths() async {
-    List<SignalStrength> strengths = await telephony.signalStrengths;
-    print(strengths);
-  }
-
-  _getServiceState() async {
-    ServiceState state = await telephony.serviceState;
-    print(state);
   }
 
   _getLastCallData() async {
@@ -426,8 +360,21 @@ class HomeController extends GetxController {
         'url': url,
         'volumeMb': volumeMb,
       });
+      youtubeUrlController.clear();
+      youtubeVolumeController.clear();
     } finally {
       LoadingUtils.stopLoading();
+    }
+  }
+
+  String getLocalizedCloseReason(String reason) {
+    switch (reason) {
+      case 'data_limit_exceeded':
+        return 'data_limit_exceeded'.tr;
+      case 'user_exit':
+        return 'user_exit'.tr;
+      default:
+        return 'unknown'.tr;
     }
   }
 }
