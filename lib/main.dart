@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Telephony Rakuten Assignment',
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
-      locale: Get.locale ?? const Locale('en'),
+      locale: Get.deviceLocale ?? const Locale('en'),
       fallbackLocale: const Locale('en'),
       supportedLocales: const [
         Locale('tr'),
