@@ -19,6 +19,9 @@ import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/service/home_service.dart';
 import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
 import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
+import 'package:telephony_rakuten_assignment/presentation/youtube/model/youtube_kpi_model.dart';
+import 'package:telephony_rakuten_assignment/presentation/youtube/service/youtube_service.dart';
+import 'package:telephony_rakuten_assignment/presentation/home/model/sms_kpi_model.dart';
 
 class HomeController extends GetxController {
   final HomeService _homeService = HomeService();
@@ -34,6 +37,8 @@ class HomeController extends GetxController {
   final Telephony telephony = Telephony.instance;
   RxList<int> signalStrength = RxList();
   Rxn<LastCallModel> lastCallModel = Rxn<LastCallModel>(null);
+  Rxn<YoutubeKpiModel> youtubeKpiModel = Rxn<YoutubeKpiModel>(null);
+  Rxn<SmsKpiModel> smsKpiModel = Rxn<SmsKpiModel>(null);
 
   Timer? _callTimer;
   int _remainingSeconds = 0;
@@ -52,6 +57,7 @@ class HomeController extends GetxController {
       }
 
       listener(SendStatus status) {
+        print(status);
         if (status == SendStatus.SENT || status == SendStatus.DELIVERED) {
           if (uid != null) {
             _homeService.sendSms(phoneNumber, message, true, uid);
@@ -89,6 +95,27 @@ class HomeController extends GetxController {
   onReady() {
     super.onReady();
     _getLastCallData();
+    _getLastYoutubeKpi();
+    _getLastSmsKpi();
+  }
+
+  Future<void> _getLastYoutubeKpi() async {
+    final userUid = await SharedPreferencesService.getString('user_uid');
+    if (userUid == null) return;
+    final kpi = await YoutubeService.getLastKpiByUid(userUid);
+    youtubeKpiModel.value = kpi;
+  }
+
+  _getLastSmsKpi() async {
+    final userUid =  SharedPreferencesService.getString('user_uid');
+    if (userUid == null) return;
+    final kpi = await _homeService.getLastSmsKpiByUid(userUid);
+    if (kpi != null) {
+      smsKpiModel.value = SmsKpiModel.fromJson(kpi as Map<String, dynamic>);
+      print(kpi);
+    } else {
+      smsKpiModel.value = null;
+    }
   }
 
   _checkAndroidVersion() async {

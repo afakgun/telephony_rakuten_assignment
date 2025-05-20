@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/const/app_colors.dart';
@@ -59,7 +58,8 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
             const SizedBox(height: 16),
             Row(
               children: [
-                Flexible(
+                Expanded(
+                  flex: 1,
                   child: DropdownUtils.cardDropdown<String>(
                     value: selectedCountryCode,
                     items: countryCodes
@@ -77,6 +77,7 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
+                  flex: 3,
                   child: TextFormField(
                     controller: receiverController,
                     keyboardType: TextInputType.phone,

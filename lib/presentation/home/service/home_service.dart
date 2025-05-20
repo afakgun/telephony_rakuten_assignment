@@ -67,4 +67,20 @@ class HomeService {
       print('Error logging SMS data to Firestore: $e');
     }
   }
+
+  Future<Object?> getLastSmsKpiByUid(String uid) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore.collection('sms_messages').where('uid', isEqualTo: uid).orderBy('timestamp', descending: true).limit(1).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot lastSmsDoc = querySnapshot.docs.first;
+        return lastSmsDoc.data();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching last SMS data: $e');
+      return null;
+    }
+  }
 }

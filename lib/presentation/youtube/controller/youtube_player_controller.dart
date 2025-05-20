@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
 import 'package:telephony_rakuten_assignment/presentation/youtube/model/youtube_kpi_model.dart';
 import 'package:telephony_rakuten_assignment/presentation/youtube/service/youtube_service.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:traffic_stats/traffic_stats.dart';
-import 'package:flutter/material.dart';
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 
 class YoutubePlayerGetxController extends GetxController {
@@ -27,47 +27,46 @@ class YoutubePlayerGetxController extends GetxController {
   final RxInt usedMb = 0.obs;
   bool volumeLimitReached = false;
 
-  // Ortalama internet hızını hesapla
   double get averageSpeed {
     if (speedSamples.isEmpty) return 0;
     return speedSamples.reduce((a, b) => a + b) / speedSamples.length;
   }
 
-  // Hız örneği ekle
   void addSpeedSample(double speedMbps) {
     speedSamples.add(speedMbps);
     kbSpeeds.add(speedMbps * 1024 / 8); // Mbps -> KB/s
   }
 
-  // Volume güncelle
   void setUsedVolume(int mb) {
     usedVolumeMb.value = mb;
   }
 
-  // Video url güncelle
   void setVideoUrl(String url) {
     videoUrl.value = url;
   }
 
-  // Kapanma sebebi güncelle
   void setCloseReason(String reason) {
     closeReason.value = reason;
   }
 
-  // Ekranı kapat
   Future<void> closeScreen(String reason) async {
     setCloseReason(reason);
     await sendKpisToFirebase();
   }
 
-  // KPI'ları Firebase'e gönder
   Future<void> sendKpisToFirebase() async {
+    final uid = SharedPreferencesService.getString('user_uid');
+    if (uid == null) {
+      return;
+    }
     final kpi = YoutubeKpiModel(
       averageSpeed: averageSpeed,
       volumeMb: usedVolumeMb.value,
       videoUrl: videoUrl.value,
       closeReason: closeReason.value,
       kbSpeeds: kbSpeeds.toList(),
+      uid: uid,
+      timestamp: DateTime.now(),
     );
     await YoutubeService.sendKpiToFirebase(kpi);
   }
@@ -106,8 +105,6 @@ class YoutubePlayerGetxController extends GetxController {
     currentSpeed.value = NetworkSpeedData(downloadSpeed: 0, uploadSpeed: 0);
 
     speedStream.listen((speedData) {
-      print('Download Speed: ${speedData.downloadSpeed} KB/s');
-      print('Upload Speed: ${speedData.uploadSpeed} KB/s');
       currentSpeed.value = speedData;
       addSpeedSample((speedData.downloadSpeed * 8) / 1024); // KB/s -> Mbps
       usedData.value += speedData.downloadSpeed;
