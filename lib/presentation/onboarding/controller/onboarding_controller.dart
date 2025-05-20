@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/routes/app_pages.dart';
+import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
 
 class OnboardingPageModel {
   final String image;
@@ -52,7 +53,8 @@ class OnboardingController extends GetxController {
     }
   }
 
-  void skipOnboarding() {
+  void skipOnboarding() async {
+    await SharedPreferencesService.setBool('onboarding_seen', true);
     Get.offNamed(Routes.WELCOME);
   }
 

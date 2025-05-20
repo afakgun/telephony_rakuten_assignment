@@ -48,6 +48,7 @@ dependencies {
 
     // Firebase Analytics (isteğe bağlı, örnek)
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'androidx.browser:browser:1.3.0'
 
     // Diğer Firebase ürünleri için eklemeler yapılabilir
 

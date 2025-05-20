@@ -1,0 +1,2 @@
+/Users/ahmetfarukakgun/Documents/telephony_rakuten_assignment/android/app/.cxx/RelWithDebInfo/5e64531i/x86_64/CMakeFiles/edit_cache.dir
+/Users/ahmetfarukakgun/Documents/telephony_rakuten_assignment/android/app/.cxx/RelWithDebInfo/5e64531i/x86_64/CMakeFiles/rebuild_cache.dir

@@ -30,6 +30,7 @@ class ConfirmationView extends GetView<ConfirmationController> {
             const SizedBox(height: 32),
             ConfirmationCodeInput(
               onChanged: controller.onCodeChanged,
+              controller: controller.codeController,
             ),
             const SizedBox(height: 32),
             Obx(() => ButtonUtils.cardButton(

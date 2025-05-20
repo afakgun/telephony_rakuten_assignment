@@ -17,7 +17,7 @@ class WelcomeService {
   }) async {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      timeout: const Duration(seconds: 60),
+      timeout: const Duration(seconds: 90),
       verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: onError,
       codeSent: (String verificationId, int? resendToken) {

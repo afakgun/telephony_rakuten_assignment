@@ -12,12 +12,14 @@ void main() async {
   await SharedPreferencesService.init();
 
   final userUid = SharedPreferencesService.getString('user_uid');
-  runApp(MyApp(userUid: userUid));
+  final onboardingSeen = SharedPreferencesService.getBool('onboarding_seen') ?? false;
+  runApp(MyApp(userUid: userUid, onboardingSeen: onboardingSeen));
 }
 
 class MyApp extends StatelessWidget {
   final String? userUid;
-  const MyApp({super.key, required this.userUid});
+  final bool onboardingSeen;
+  const MyApp({super.key, required this.userUid, required this.onboardingSeen});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,9 @@ class MyApp extends StatelessWidget {
           labelSmall: TextStyle(fontFamily: 'Gilroy'),
         ),
       ),
-      initialRoute: userUid != null ? Routes.HOME : AppPages.INITIAL,
+      initialRoute: userUid != null
+          ? Routes.HOME
+          : (onboardingSeen ? AppPages.INITIAL : Routes.ONBOARDING),
       getPages: AppPages.routes,
     );
   }

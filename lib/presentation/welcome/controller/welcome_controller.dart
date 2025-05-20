@@ -14,17 +14,20 @@ class WelcomeController extends GetxController {
 
   Future<void> sendOtp(BuildContext context) async {
     if (!isFormValid) return;
-    LoadingUtils.startLoading(context);
     errorMessage.value = '';
     try {
+      LoadingUtils.startLoading(context);
+      await Future.delayed(const Duration(seconds: 2));
       await WelcomeService().sendOtp(
         phoneNumber: '${countryCode.value}${phoneNumber.value}',
         onCodeSent: (verificationId) {
+          LoadingUtils.startLoading(context);
           Get.toNamed(Routes.CONFIRMATION, arguments: {
             'verificationId': verificationId,
             'phoneNumber': '${countryCode.value}${phoneNumber.value}',
             'countryCode': countryCode.value,
           });
+          LoadingUtils.stopLoading();
         },
         onError: (e) {
           errorMessage.value = 'otp_not_sent'.trParams({'error': e.message ?? ''});

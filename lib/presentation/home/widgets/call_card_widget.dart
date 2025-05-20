@@ -4,6 +4,7 @@ import 'package:telephony_rakuten_assignment/const/app_colors.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/controller/home_controller.dart';
 import 'package:telephony_rakuten_assignment/presentation/home/widgets/call_bottom_sheet_widget.dart';
 import 'package:telephony_rakuten_assignment/utils/textstyle_utils.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class CallCard extends StatelessWidget {
   const CallCard({super.key});
@@ -71,23 +72,88 @@ class CallCard extends StatelessWidget {
               const SizedBox(height: 24),
               Visibility(
                 visible: controller.lastCallModel.value != null,
-                child: Card(
-                  color: Colors.grey[100],
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Text('call_card_last_info'.tr, style: TextStyleUtils.blackColorBoldText(15)),
-                        const SizedBox(height: 8),
-                        ...kpi.entries.map((e) => Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(e.key + ':', style: TextStyleUtils.blackColorRegularText(13)),
-                                Text(e.value, style: TextStyleUtils.blackColorRegularText(13)),
-                              ],
-                            )),
-                      ],
+                child: GestureDetector(
+                  onTap: () {
+                    final qualityList = controller.lastCallModel.value?.qualityStrengthList ?? [];
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          width: 350,
+                          height: 300,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Arama Kalitesi', style: TextStyleUtils.blackColorBoldText(16)),
+                              const SizedBox(height: 16),
+                              Expanded(
+                                child: qualityList.isNotEmpty
+                                    ? LineChart(
+                                        LineChartData(
+                                          minX: 0,
+                                          maxX: (qualityList.length - 1).toDouble(),
+                                          minY: 0,
+                                          maxY: 5,
+                                          titlesData: FlTitlesData(
+                                            leftTitles: AxisTitles(
+                                              sideTitles: SideTitles(showTitles: true, reservedSize: 28),
+                                            ),
+                                            bottomTitles: AxisTitles(
+                                              sideTitles: SideTitles(showTitles: true, reservedSize: 28),
+                                            ),
+                                            rightTitles: AxisTitles(
+                                              sideTitles: SideTitles(showTitles: false),
+                                            ),
+                                            topTitles: AxisTitles(
+                                              sideTitles: SideTitles(showTitles: false),
+                                            ),
+                                          ),
+                                          gridData: FlGridData(show: true),
+                                          borderData: FlBorderData(show: true),
+                                          lineBarsData: [
+                                            LineChartBarData(
+                                              spots: List.generate(
+                                                qualityList.length,
+                                                (i) => FlSpot(i.toDouble(), qualityList[i].toDouble()),
+                                              ),
+                                              isCurved: true,
+                                              color: AppColors.primary,
+                                              barWidth: 3,
+                                              dotData: FlDotData(show: false),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Center(child: Text('Veri yok')),
+                              ),
+                              const SizedBox(height: 8),
+                              Text('X: Süre (sn), Y: Kalite (0-5)', style: TextStyleUtils.blackColorRegularText(12)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    color: Colors.grey[100],
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Text('call_card_last_info'.tr, style: TextStyleUtils.blackColorBoldText(15)),
+                          const SizedBox(height: 8),
+                          ...kpi.entries.map((e) => Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(e.key + ':', style: TextStyleUtils.blackColorRegularText(13)),
+                                  Text(e.value, style: TextStyleUtils.blackColorRegularText(13)),
+                                ],
+                              )),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -120,4 +186,3 @@ class CallCard extends StatelessWidget {
     }
   }
 }
-
