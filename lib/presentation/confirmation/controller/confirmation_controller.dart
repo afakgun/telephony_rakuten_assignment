@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:telephony_rakuten_assignment/core/services/shared_preferences_service.dart';
 import 'package:telephony_rakuten_assignment/models/user_models.dart';
 import 'package:telephony_rakuten_assignment/presentation/welcome/welcome_service.dart';
+import 'package:telephony_rakuten_assignment/utils/loading_utils.dart';
 
 class ConfirmationController extends GetxController {
   final String verificationId;
@@ -12,7 +13,6 @@ class ConfirmationController extends GetxController {
   final String countryCode;
   final code = ''.obs;
   final isCodeValid = false.obs;
-  final isLoading = false.obs;
   final errorMessage = ''.obs;
 
   ConfirmationController({
@@ -27,10 +27,10 @@ class ConfirmationController extends GetxController {
     errorMessage.value = '';
   }
 
-  Future<void> resendCode() async {
-    isLoading.value = true;
+  Future<void> resendCode(BuildContext context) async {
     errorMessage.value = '';
     try {
+      LoadingUtils.startLoading(context);
       final service = WelcomeService();
       await service.sendOtp(
         phoneNumber: phoneNumber,
@@ -44,14 +44,14 @@ class ConfirmationController extends GetxController {
     } catch (e) {
       errorMessage.value = 'code_not_resent'.tr;
     } finally {
-      isLoading.value = false;
+      LoadingUtils.stopLoading();
     }
   }
 
-  Future<void> onConfirmPressed() async {
-    isLoading.value = true;
+  Future<void> onConfirmPressed(BuildContext context) async {
     errorMessage.value = '';
     try {
+      LoadingUtils.startLoading(context);
       final service = WelcomeService();
       final userCredential = await service.verifyOtp(
         verificationId: verificationId,
@@ -59,19 +59,20 @@ class ConfirmationController extends GetxController {
       );
       final user = userCredential.user;
       if (user != null) {
-        await checkUserAndNavigate(user.uid);
+        await checkUserAndNavigate(user.uid, context);
       } else {
         errorMessage.value = 'user_not_verified'.tr;
       }
     } catch (e) {
       errorMessage.value = '${'code_not_verified'.tr} \n ${e.toString()}';
     } finally {
-      isLoading.value = false;
+      LoadingUtils.stopLoading();
     }
   }
 
-  Future<void> checkUserAndNavigate(String uid) async {
+  Future<void> checkUserAndNavigate(String uid, BuildContext context) async {
     try {
+      LoadingUtils.startLoading(context);
       final service = WelcomeService();
       final user = await service.getUserFromFirestore(uid);
 
@@ -84,6 +85,8 @@ class ConfirmationController extends GetxController {
       }
     } catch (e) {
       errorMessage.value = 'user_check_error'.tr;
+    } finally {
+      LoadingUtils.stopLoading();
     }
   }
 

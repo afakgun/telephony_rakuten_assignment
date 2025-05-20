@@ -33,22 +33,18 @@ class ConfirmationView extends GetView<ConfirmationController> {
             ),
             const SizedBox(height: 32),
             Obx(() => ButtonUtils.cardButton(
-                  onTap: controller.isCodeValid.value ? controller.onConfirmPressed : null,
+                  onTap: controller.isCodeValid.value ? () => controller.onConfirmPressed(context) : null,
                   backgroundColor: AppColors.primary,
                   textColor: Colors.white,
                   enabled: controller.isCodeValid.value,
                   verticalPadding: 16,
                   fontSize: 18,
-                  child: controller.isLoading.value
-                      ? const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        )
-                      : Text('continue'.tr, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  child: Text('continue'.tr, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                 )),
-            Obx(() => TextButton(
-                  onPressed: controller.isLoading.value ? null : controller.resendCode,
-                  child: Text('resend'.tr),
-                )),
+            TextButton(
+              onPressed: () => controller.resendCode(context),
+              child: Text('resend'.tr),
+            ),
             Obx(() => controller.errorMessage.value.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(top: 16.0),

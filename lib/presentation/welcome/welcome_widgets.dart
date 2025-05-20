@@ -18,28 +18,26 @@ class CountryCodeDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: DropdownUtils.cardDropdown<String>(
-        value: value,
-        onChanged: onChanged,
-        items: items.map((item) {
-          return DropdownMenuItem(
-            value: item.code,
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  item.flagAsset,
-                  width: 28,
-                  height: 20,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(width: 8),
-                Text(item.code, style: TextStyle(fontSize: 16)),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
+    return DropdownUtils.cardDropdown<String>(
+      value: value,
+      onChanged: onChanged,
+      items: items.map((item) {
+        return DropdownMenuItem(
+          value: item.code,
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                item.flagAsset,
+                width: 28,
+                height: 20,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(width: 8),
+              Text(item.code, style: TextStyle(fontSize: 16)),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

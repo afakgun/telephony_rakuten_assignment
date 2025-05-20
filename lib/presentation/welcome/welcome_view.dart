@@ -85,7 +85,7 @@ class WelcomeView extends StatelessWidget {
               Obx(() => ButtonUtils.cardButton(
                     onTap: controller.isFormValid
                         ? () async {
-                            await controller.sendOtp();
+                            await controller.sendOtp(context);
                             if (controller.errorMessage.isEmpty) {}
                           }
                         : null,
@@ -94,11 +94,7 @@ class WelcomeView extends StatelessWidget {
                     enabled: controller.isFormValid,
                     verticalPadding: 16,
                     fontSize: 18,
-                    child: controller.isLoading.value
-                        ? const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          )
-                        : Text('continue'.tr, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: Text('continue'.tr, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                   )),
             ],
           ),
