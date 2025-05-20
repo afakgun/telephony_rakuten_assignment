@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/presentation/confirmation/confirmation_widgets.dart';
 import 'package:telephony_rakuten_assignment/presentation/confirmation/controller/confirmation_controller.dart';
+import '../../../utils/button_utils.dart';
+import '../../../const/app_colors.dart';
 
 class ConfirmationView extends StatelessWidget {
   final String verificationId;
@@ -48,9 +50,18 @@ class ConfirmationView extends StatelessWidget {
                   child: Text('resend'.tr),
                 )),
             const SizedBox(height: 16),
-            Obx(() => ElevatedButton(
-                  onPressed: controller.isCodeValid.value ? controller.onConfirmPressed : null,
-                  child: controller.isLoading.value ? const CircularProgressIndicator() : Text('continue'.tr),
+            Obx(() => ButtonUtils.cardButton(
+                  onTap: controller.isCodeValid.value ? controller.onConfirmPressed : null,
+                  backgroundColor: AppColors.primary,
+                  textColor: Colors.white,
+                  enabled: controller.isCodeValid.value,
+                  verticalPadding: 16,
+                  fontSize: 18,
+                  child: controller.isLoading.value
+                      ? const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : Text('continue'.tr, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                 )),
             Obx(() => controller.errorMessage.value.isNotEmpty
                 ? Padding(

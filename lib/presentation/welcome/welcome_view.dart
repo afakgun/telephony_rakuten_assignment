@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:telephony_rakuten_assignment/utils/dialog_utils.dart';
 import 'welcome_controller.dart';
 import 'welcome_widgets.dart';
+import '../../utils/button_utils.dart';
+import '../../const/app_colors.dart';
 
 class WelcomeView extends StatelessWidget {
   final WelcomeController controller = Get.put(WelcomeController());
@@ -77,24 +79,23 @@ class WelcomeView extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              Obx(() => SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: controller.isFormValid
-                          ? () async {
-                              await controller.sendOtp();
-                              if (controller.errorMessage.isEmpty) {}
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        textStyle: TextStyle(fontSize: 18),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: controller.isLoading.value ? CircularProgressIndicator() : Text('continue'.tr),
-                    ),
+              Obx(() => ButtonUtils.cardButton(
+                    onTap: controller.isFormValid
+                        ? () async {
+                            await controller.sendOtp();
+                            if (controller.errorMessage.isEmpty) {}
+                          }
+                        : null,
+                    backgroundColor: AppColors.primary,
+                    textColor: Colors.white,
+                    enabled: controller.isFormValid,
+                    verticalPadding: 16,
+                    fontSize: 18,
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          )
+                        : Text('continue'.tr, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                   )),
             ],
           ),

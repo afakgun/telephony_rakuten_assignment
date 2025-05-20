@@ -4,6 +4,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'home_controller.dart';
 import '../../utils/textstyle_utils.dart';
+import '../../utils/button_utils.dart';
 import '../../const/app_colors.dart';
 
 class UserInfoHeader extends StatelessWidget {
@@ -247,20 +248,19 @@ class _CallBottomSheetState extends State<CallBottomSheet> {
               validator: (v) => v == null || v.isEmpty ? 'enter_duration'.tr : null,
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    final receiver = selectedCountryCode + receiverController.text.trim();
-                    final duration = int.tryParse(durationController.text.trim()) ?? 0;
-                    await FlutterPhoneDirectCaller.callNumber(receiver);
-                    controller.startCallTimer(duration, receiver, context);
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: Text('start_call'.tr),
-              ),
+            ButtonUtils.cardButton(
+              text: 'start_call'.tr,
+              onTap: () async {
+                if (_formKey.currentState?.validate() ?? false) {
+                  final receiver = selectedCountryCode + receiverController.text.trim();
+                  final duration = int.tryParse(durationController.text.trim()) ?? 0;
+                  await FlutterPhoneDirectCaller.callNumber(receiver);
+                  controller.startCallTimer(duration, receiver, context);
+                  Navigator.of(context).pop();
+                }
+              },
+              backgroundColor: AppColors.primary,
+              textColor: Colors.white,
             ),
           ],
         ),
@@ -504,19 +504,18 @@ class _SmsBottomSheetState extends State<SmsBottomSheet> {
               validator: (v) => v == null || v.isEmpty ? 'Mesaj giriniz' : null,
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    final receiver = selectedCountryCode + receiverController.text.trim();
-                    final message = messageController.text.trim();
-                    await controller.sendSms(receiver, message, context);
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: Text('sms_send'.tr),
-              ),
+            ButtonUtils.cardButton(
+              text: 'sms_send'.tr,
+              onTap: () async {
+                if (_formKey.currentState?.validate() ?? false) {
+                  final receiver = selectedCountryCode + receiverController.text.trim();
+                  final message = messageController.text.trim();
+                  await controller.sendSms(receiver, message, context);
+                  Navigator.of(context).pop();
+                }
+              },
+              backgroundColor: AppColors.primary,
+              textColor: Colors.white,
             ),
           ],
         ),
