@@ -33,45 +33,6 @@ class YoutubePlayerGetxController extends GetxController {
     return speedSamples.reduce((a, b) => a + b) / speedSamples.length;
   }
 
-  void addSpeedSample(double speedMbps) {
-    speedSamples.add(speedMbps);
-    kbSpeeds.add(speedMbps * 1024 / 8); // Mbps -> KB/s
-  }
-
-  void setUsedVolume(int mb) {
-    usedVolumeMb.value = mb;
-  }
-
-  void setVideoUrl(String url) {
-    videoUrl.value = url;
-  }
-
-  void setCloseReason(String reason) {
-    closeReason.value = reason;
-  }
-
-  Future<void> closeScreen(String reason) async {
-    setCloseReason(reason);
-    await sendKpisToFirebase();
-  }
-
-  Future<void> sendKpisToFirebase() async {
-    final uid = SharedPreferencesService.getString('user_uid');
-    if (uid == null) {
-      return;
-    }
-    final kpi = YoutubeKpiModel(
-      averageSpeed: averageSpeed,
-      volumeMb: usedVolumeMb.value,
-      videoUrl: videoUrl.value,
-      closeReason: closeReason.value,
-      kbSpeeds: kbSpeeds.toList(),
-      uid: uid,
-      timestamp: DateTime.now(),
-    );
-    await YoutubeService.sendKpiToFirebase(kpi);
-  }
-
   @override
   void onInit() {
     final args = Get.arguments ?? {};
@@ -121,6 +82,45 @@ class YoutubePlayerGetxController extends GetxController {
         _showLimitDialog();
       }
     });
+  }
+
+  void addSpeedSample(double speedMbps) {
+    speedSamples.add(speedMbps);
+    kbSpeeds.add(speedMbps * 1024 / 8); // Mbps -> KB/s
+  }
+
+  void setUsedVolume(int mb) {
+    usedVolumeMb.value = mb;
+  }
+
+  void setVideoUrl(String url) {
+    videoUrl.value = url;
+  }
+
+  void setCloseReason(String reason) {
+    closeReason.value = reason;
+  }
+
+  Future<void> closeScreen(String reason) async {
+    setCloseReason(reason);
+    await sendKpisToFirebase();
+  }
+
+  Future<void> sendKpisToFirebase() async {
+    final uid = SharedPreferencesService.getString('user_uid');
+    if (uid == null) {
+      return;
+    }
+    final kpi = YoutubeKpiModel(
+      averageSpeed: averageSpeed,
+      volumeMb: usedVolumeMb.value,
+      videoUrl: videoUrl.value,
+      closeReason: closeReason.value,
+      kbSpeeds: kbSpeeds.toList(),
+      uid: uid,
+      timestamp: DateTime.now(),
+    );
+    await YoutubeService.sendKpiToFirebase(kpi);
   }
 
   void _showLimitDialog() {
